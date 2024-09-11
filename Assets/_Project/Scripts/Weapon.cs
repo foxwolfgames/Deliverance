@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private Camera playerCamera;
+    [SerializeField] private GameObject muzzleEffect;
+    private Animator animator;
 
     // Bullet
     [Header("Bullet")]
@@ -39,6 +40,7 @@ public class Weapon : MonoBehaviour
     {
         readyToShoot = true;
         burstBulletsLeft = bulletsPerBurst;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -63,6 +65,11 @@ public class Weapon : MonoBehaviour
 
     private void FireWeapon()
     {
+        muzzleEffect.GetComponent<ParticleSystem>().Play();
+        animator.SetTrigger("RECOIL");
+
+        SoundManager.Instance.shootingSound.Play();
+        
         readyToShoot = false;
 
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
@@ -101,7 +108,7 @@ public class Weapon : MonoBehaviour
     public Vector3 CalculateDirectionAndSpread()
     {
         // Shooting direction from the middle of the screen
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         Vector3 targetPoint;

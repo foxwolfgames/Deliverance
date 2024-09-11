@@ -1,4 +1,5 @@
 using System;
+using Deliverance.UI;
 using FWGameLib.Common.AudioSystem.Event;
 
 namespace FWGameLib.InProject.EventSystem
@@ -10,7 +11,7 @@ namespace FWGameLib.InProject.EventSystem
     public class EventRegister
     {
         public static EventRegister Instance { get; private set; }
-        
+
         public EventRegister()
         {
             if (Instance == null)
@@ -22,7 +23,7 @@ namespace FWGameLib.InProject.EventSystem
                 // throw new Exception("EventRegister is a singleton and cannot be instantiated more than once.");
             }
         }
-        
+
         /// <summary>
         /// Changing the volume on a volume slider
         /// FWGL built-in event
@@ -32,7 +33,7 @@ namespace FWGameLib.InProject.EventSystem
         {
             FWGLChangeVolumeEventHandler?.Invoke(this, @event);
         }
-        
+
         /// <summary>
         /// AudioSystem: Fired when a audio source is finished
         /// FWGL built-in event
@@ -42,7 +43,7 @@ namespace FWGameLib.InProject.EventSystem
         {
             FWGLSoundFinishedEventHandler?.Invoke(this, @event);
         }
-        
+
         /// <summary>
         /// AudioSystem: Forcefully stop a sound
         /// FWGL built-in event
@@ -52,7 +53,7 @@ namespace FWGameLib.InProject.EventSystem
         {
             FWGLStopSoundEventHandler?.Invoke(this, @event);
         }
-        
+
         /// <summary>
         /// AudioSystem: Call when pausing audio that is paused with the game
         /// FWGL built-in event
@@ -62,7 +63,7 @@ namespace FWGameLib.InProject.EventSystem
         {
             FWGLAudioPauseEventHandler?.Invoke(this, @event);
         }
-        
+
         /// <summary>
         /// AudioSystem: Call when unpausing audio that is paused with the game
         /// FWGL built-in event
@@ -71,6 +72,15 @@ namespace FWGameLib.InProject.EventSystem
         public void Invoke(FWGLAudioUnpauseEvent @event)
         {
             FWGLAudioUnpauseEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// UI: Call when pressing a button
+        /// </summary>
+        public event EventHandler<UIButtonPressEvent> UIButtonPressEventEventHandler;
+        public void Invoke(UIButtonPressEvent @event)
+        {
+            UIButtonPressEventEventHandler?.Invoke(this, @event);
         }
     }
 }

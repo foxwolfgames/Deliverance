@@ -1,4 +1,6 @@
 using System.Collections;
+using Deliverance;
+using FWGameLib.InProject.AudioSystem;
 using TMPro;
 using UnityEngine;
 
@@ -68,7 +70,7 @@ public class Weapon : MonoBehaviour
             // Sound
             if (bulletsLeft == 0 && isShooting)
             {
-                SoundManager.Instance.emptyMagazineSound.Play();
+                DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_M16_EMPTY_MAGAZINE, firePoint);
             }
 
             if (currentShootingMode == ShootingMode.Auto)
@@ -135,7 +137,7 @@ public class Weapon : MonoBehaviour
 
         }
 
-        SoundManager.Instance.PlayShootingSound();
+        DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_M16_SHOOT, firePoint);
 
         readyToShoot = false;
 
@@ -175,7 +177,7 @@ public class Weapon : MonoBehaviour
 
     private void Reload()
     {
-        SoundManager.Instance.reloadingSound.Play();
+        DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_COLT1911_RELOAD, firePoint);
         animator.SetTrigger("RELOAD");
         isReloading = true;
         Invoke("ReloadCompleted", reloadTime);

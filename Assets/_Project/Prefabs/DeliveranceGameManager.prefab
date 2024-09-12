@@ -65,7 +65,9 @@ MonoBehaviour:
   defaultVolume: 0.5
   pooledAudioSourcePrefab: {fileID: 2694777489667256715, guid: 3685b8a585278f349944adfbbb9cc1af,
     type: 3}
-  clipData: []
+  clipData:
+  - {fileID: 11400000, guid: 0af9526a2441cd44982ee8e77d4fd738, type: 2}
+  - {fileID: 11400000, guid: 274418fdef130984b9e464aaa24dadc9, type: 2}
 --- !u!114 &8909035596280111308
 MonoBehaviour:
   m_ObjectHideFlags: 0

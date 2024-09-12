@@ -185,6 +185,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeliveranceGameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7139950523052596306, guid: d84854dc0b20ea04caa054778fa477bf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

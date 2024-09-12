@@ -16,14 +16,14 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float bulletVelocity;
     [SerializeField] private float bulletPrefabLifetime;
-    
+
     // Shooting
     [Header("Shooting")]
     [SerializeField] private bool isShooting;
     [SerializeField] private bool readyToShoot;
     bool allowReset = true;
     [SerializeField] public float shootingDelay;
-    [SerializeField] public enum ShootingMode 
+    [SerializeField] public enum ShootingMode
     {
         Single,
         Burst,
@@ -71,7 +71,7 @@ public class Weapon : MonoBehaviour
                 SoundManager.Instance.emptyMagazineSound.Play();
             }
 
-            if (currentShootingMode == ShootingMode.Auto) 
+            if (currentShootingMode == ShootingMode.Auto)
             {
                 // Holding Down Left Mouse Button
                 isShooting = Input.GetKey(KeyCode.Mouse0);
@@ -124,7 +124,7 @@ public class Weapon : MonoBehaviour
         bulletsLeft--;
 
         muzzleEffect.GetComponent<ParticleSystem>().Play();
-        
+
         if (isADS)
         {
             animator.SetTrigger("RECOIL_ADS");
@@ -136,7 +136,7 @@ public class Weapon : MonoBehaviour
         }
 
         SoundManager.Instance.PlayShootingSound();
-        
+
         readyToShoot = false;
 
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
@@ -145,11 +145,12 @@ public class Weapon : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
 
         // Point bullet to face the shooting direction
-        bullet.transform.position = shootingDirection;
+        // Did you mean to set position to the shooting direction? - justin
+        // bullet.transform.position = shootingDirection;
 
         // Shoot the bullet forward with the specified velocity
         bullet.GetComponent<Rigidbody>().AddForce(shootingDirection * bulletVelocity, ForceMode.Impulse);
-        
+
         //Destroy the bullet after a specified lifetime
         StartCoroutine(DestroyBulletAfterTime(bullet, bulletPrefabLifetime));
 
@@ -165,7 +166,7 @@ public class Weapon : MonoBehaviour
             Invoke("FireWeapon", shootingDelay);
         }
     }
-    
+
     private void ResetShot()
     {
         readyToShoot = true;
@@ -190,7 +191,7 @@ public class Weapon : MonoBehaviour
             InventoryManager.Instance.UpdateAmmo(-(magazineSize-bulletsLeft));
             bulletsLeft = magazineSize;
         }
-        else 
+        else
         {
             int leftoverAmmo = InventoryManager.Instance.CheckAmmoLeft();
             InventoryManager.Instance.UpdateAmmo(-bulletsLeft);
@@ -238,12 +239,12 @@ public class Weapon : MonoBehaviour
 
         return direction + new Vector3(x, y, 0); // Add some spread to the shooting
     }
-    
-    private IEnumerator DestroyBulletAfterTime(GameObject bullet, float lifetime) 
+
+    private IEnumerator DestroyBulletAfterTime(GameObject bullet, float lifetime)
     {
         yield return new WaitForSeconds(lifetime);
         Destroy(bullet); // Destroy the bullet when it reaches its lifetime
     }
-    
+
 }
 

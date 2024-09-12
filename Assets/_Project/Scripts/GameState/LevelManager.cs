@@ -47,9 +47,6 @@ namespace Deliverance.GameState
                 }
             }
 
-            // Artificial wait time
-            yield return new WaitForSeconds(2f);
-
             loadingCanvas.SetActive(false);
         }
 

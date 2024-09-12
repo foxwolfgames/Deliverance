@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] public bool isActiveWeapon;
     private Animator animator;
     [SerializeField] private GameObject muzzleEffect;
+    [SerializeField] private bool isADS;
 
     // Bullet
     [Header("Bullet")]
@@ -37,7 +38,9 @@ public class Weapon : MonoBehaviour
 
     // Spread
     [Header("Spread")]
-    [SerializeField] public float spreadIntensity;
+    [SerializeField] public float hipSpreadIntensity;
+    [SerializeField] public float ADSSpreadIntensity;
+    private float spreadIntensity;
 
     // Reload
     [Header("Reload")]
@@ -52,6 +55,7 @@ public class Weapon : MonoBehaviour
         burstBulletsLeft = bulletsPerBurst;
         animator = GetComponent<Animator>();
         bulletsLeft = magazineSize;
+        spreadIntensity = hipSpreadIntensity;
     }
 
     void Update()
@@ -97,6 +101,15 @@ public class Weapon : MonoBehaviour
                 FireWeapon();
             }
 
+            if (Input.GetMouseButtonDown(1))
+            {
+                EnterADS();
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                ExitADS();
+            }
+
             // Update the ammo display
             if (AmmoManager.Instance.ammoDisplay!= null)
             {
@@ -111,7 +124,16 @@ public class Weapon : MonoBehaviour
         bulletsLeft--;
 
         muzzleEffect.GetComponent<ParticleSystem>().Play();
-        animator.SetTrigger("RECOIL");
+        
+        if (isADS)
+        {
+            animator.SetTrigger("RECOIL_ADS");
+        }
+        else if (!isADS)
+        {
+            animator.SetTrigger("RECOIL");
+
+        }
 
         SoundManager.Instance.PlayShootingSound();
         
@@ -161,6 +183,7 @@ public class Weapon : MonoBehaviour
     private void ReloadCompleted()
     {
         isReloading = false;
+        isADS = false;
         if (InventoryManager.Instance.CheckAmmoLeft() + bulletsLeft > magazineSize)
         {
             // InventoryManager.Instance.UpdateAmmo(-(magazineSize - bulletsLeft/bulletsPerBurst));
@@ -173,6 +196,20 @@ public class Weapon : MonoBehaviour
             InventoryManager.Instance.UpdateAmmo(-bulletsLeft);
             bulletsLeft += leftoverAmmo;
         }
+    }
+
+    private void EnterADS()
+    {
+        animator.SetTrigger("enterADS");
+        isADS = true;
+        spreadIntensity = ADSSpreadIntensity;
+    }
+
+    private void ExitADS()
+    {
+        animator.SetTrigger("exitADS");
+        isADS = false;
+        spreadIntensity = hipSpreadIntensity;
     }
 
     public Vector3 CalculateDirectionAndSpread()

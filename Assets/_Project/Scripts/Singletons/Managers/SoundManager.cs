@@ -6,7 +6,8 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; set; }
 
-    public AudioSource shootingSound;
+    public AudioSource shootingChannel;
+    public AudioClip shotSoundClip;
     public AudioSource reloadingSound;
     public AudioSource emptyMagazineSound;
     
@@ -22,5 +23,10 @@ public class SoundManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public void PlayShootingSound()
+    {
+        shootingChannel.PlayOneShot(shotSoundClip);
     }
 }

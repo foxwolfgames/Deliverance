@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
 
+    [SerializeField] public bool isActiveWeapon;
     private Animator animator;
     [SerializeField] private GameObject muzzleEffect;
 
@@ -55,46 +56,52 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        // Sound
-        if (bulletsLeft == 0 && isShooting)
+        if (isActiveWeapon)
         {
-            SoundManager.Instance.emptyMagazineSound.Play();
-        }
+            // // Our weapon is never pickupable so it won't have the outline script, but if we did want to have that would need this line
+            // GetComponent<Outline>().enabled = false;
 
-        if (currentShootingMode == ShootingMode.Auto) 
-        {
-            // Holding Down Left Mouse Button
-            isShooting = Input.GetKey(KeyCode.Mouse0);
-        }
-        else if (currentShootingMode == ShootingMode.Single || currentShootingMode == ShootingMode.Burst)
-        {
-            // Clicking Left Mouse Button Once for single/burst shot
-            isShooting = Input.GetKeyDown(KeyCode.Mouse0);
-        }
+            // Sound
+            if (bulletsLeft == 0 && isShooting)
+            {
+                SoundManager.Instance.emptyMagazineSound.Play();
+            }
 
-        // Clicking Right Mouse Button to Reload
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading)
-        {
-            Reload();
-        }
+            if (currentShootingMode == ShootingMode.Auto) 
+            {
+                // Holding Down Left Mouse Button
+                isShooting = Input.GetKey(KeyCode.Mouse0);
+            }
+            else if (currentShootingMode == ShootingMode.Single || currentShootingMode == ShootingMode.Burst)
+            {
+                // Clicking Left Mouse Button Once for single/burst shot
+                isShooting = Input.GetKeyDown(KeyCode.Mouse0);
+            }
 
-        // // Automatic reload when magazine is empty
-        // if (readyToShoot && !isShooting && isReloading == false && bulletsLeft <= 0)
-        // {
-        //     Reload();
-        // }
+            // Clicking Right Mouse Button to Reload
+            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading && InventoryManager.Instance.CheckAmmoLeft() > 0)
+            {
+                Reload();
+            }
 
-        // shooting weapon
-        if (isShooting && readyToShoot && bulletsLeft > 0)
-        {
-            burstBulletsLeft = bulletsPerBurst;
-            FireWeapon();
-        }
+            // // Automatic reload when magazine is empty
+            // if (readyToShoot && !isShooting && isReloading == false && bulletsLeft <= 0)
+            // {
+            //     Reload();
+            // }
 
-        // Update the ammo display
-        if (AmmoManager.Instance.ammoDisplay!= null)
-        {
-            AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
+            // shooting weapon
+            if (isShooting && readyToShoot && bulletsLeft > 0)
+            {
+                burstBulletsLeft = bulletsPerBurst;
+                FireWeapon();
+            }
+
+            // Update the ammo display
+            if (AmmoManager.Instance.ammoDisplay!= null)
+            {
+                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{InventoryManager.Instance.CheckAmmoLeft()}";
+            }
         }
     }
 
@@ -106,7 +113,7 @@ public class Weapon : MonoBehaviour
         muzzleEffect.GetComponent<ParticleSystem>().Play();
         animator.SetTrigger("RECOIL");
 
-        SoundManager.Instance.shootingSound.Play();
+        SoundManager.Instance.PlayShootingSound();
         
         readyToShoot = false;
 
@@ -154,7 +161,18 @@ public class Weapon : MonoBehaviour
     private void ReloadCompleted()
     {
         isReloading = false;
-        bulletsLeft = magazineSize;
+        if (InventoryManager.Instance.CheckAmmoLeft() + bulletsLeft > magazineSize)
+        {
+            // InventoryManager.Instance.UpdateAmmo(-(magazineSize - bulletsLeft/bulletsPerBurst));
+            InventoryManager.Instance.UpdateAmmo(-(magazineSize-bulletsLeft));
+            bulletsLeft = magazineSize;
+        }
+        else 
+        {
+            int leftoverAmmo = InventoryManager.Instance.CheckAmmoLeft();
+            InventoryManager.Instance.UpdateAmmo(-bulletsLeft);
+            bulletsLeft += leftoverAmmo;
+        }
     }
 
     public Vector3 CalculateDirectionAndSpread()

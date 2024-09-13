@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Deliverance.GameState.Event;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Deliverance.GameState
+namespace Deliverance
 {
     public class LevelManager : MonoBehaviour
     {
         [SerializeField] private GameObject loadingCanvas;
         [SerializeField] private Slider progressBar;
 
-        public void Awake()
+        void Awake()
         {
             loadingCanvas.SetActive(false);
             SceneManager.LoadSceneAsync((int)Scenes.MainMenu, LoadSceneMode.Additive);
@@ -47,6 +47,9 @@ namespace Deliverance.GameState
                 }
             }
 
+            yield return new WaitForSeconds(1.5f);
+
+            new GameLoadingCompletedEvent().Invoke();
             loadingCanvas.SetActive(false);
         }
 

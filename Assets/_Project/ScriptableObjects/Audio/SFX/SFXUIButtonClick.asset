@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d9f64f29353e84cb0de744b53f2154, type: 3}
   m_Name: SFXUIButtonClick
   m_EditorClassIdentifier: 
-  soundName: 0
-  audioVolumeType: 0
-  clips: []
+  soundName: 3
+  audioVolumeType: 2
+  clips:
+  - {fileID: 8300000, guid: 8898dd391a5bf9a40bbce61f33713962, type: 3}
   volume: 1
   pitch: 1
-  dimensionality: 0.5
+  dimensionality: 0
   useLowPassFilter: 0
   lowPassFilterCutoffFrequency: 1000
   loop: 0

@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d9f64f29353e84cb0de744b53f2154, type: 3}
   m_Name: MusicMainMenu
   m_EditorClassIdentifier: 
-  soundName: 0
-  audioVolumeType: 0
-  clips: []
-  volume: 1
+  soundName: 4
+  audioVolumeType: 1
+  clips:
+  - {fileID: 8300000, guid: 35c5dd2f2b93d0a479a92096427eb7d7, type: 3}
+  volume: 0.75
   pitch: 1
-  dimensionality: 0.5
+  dimensionality: 0
   useLowPassFilter: 0
   lowPassFilterCutoffFrequency: 1000
-  loop: 0
+  loop: 1
   audioClipStrategy: 0
   ignorePause: 0

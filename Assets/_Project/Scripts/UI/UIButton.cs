@@ -6,7 +6,7 @@ namespace Deliverance.UI
 {
     public class UIButton : MonoBehaviour
     {
-        [SerializeField] public String eventName;
+        [SerializeField] public string eventName;
 
         public void OnClick()
         {
@@ -18,7 +18,7 @@ namespace Deliverance.UI
     {
         public String EventName;
 
-        public UIButtonPressEvent(String eventName)
+        public UIButtonPressEvent(string eventName)
         {
             EventName = eventName;
         }
@@ -27,5 +27,10 @@ namespace Deliverance.UI
         {
             DeliveranceGameManager.Instance.EventRegister.Invoke(this);
         }
+    }
+
+    public static class UIButtonEvents
+    {
+        public const string StartGame = "StartGame";
     }
 }

@@ -1,4 +1,6 @@
 using System;
+using Deliverance.Gameplay;
+using Deliverance.GameState.Event;
 using Deliverance.UI;
 using FWGameLib.Common.AudioSystem.Event;
 
@@ -81,6 +83,34 @@ namespace FWGameLib.InProject.EventSystem
         public void Invoke(UIButtonPressEvent @event)
         {
             UIButtonPressEventEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// GameState: Main menu scene finished loading
+        /// </summary>
+        public event EventHandler<MainMenuSceneLoadedEvent> MainMenuSceneLoadedEventHandler;
+        public void Invoke(MainMenuSceneLoadedEvent @event)
+        {
+            MainMenuSceneLoadedEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// Gameplay: Call when the in-game manager is initialized
+        /// </summary>
+        public event EventHandler<InGameManagerInitializeEvent> InGameManagerInitializeEventHandler;
+        public void Invoke(InGameManagerInitializeEvent @event)
+        {
+            InGameManagerInitializeEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// GameState: Call when game has finished loading to indicate transition into the InGameState
+        /// Not necessarily indicative of when we enter the game scene, but instead when all steps in the LevelManager have been completed
+        /// </summary>
+        public event EventHandler<GameLoadingCompletedEvent> GameLoadingCompletedEventHandler;
+        public void Invoke(GameLoadingCompletedEvent @event)
+        {
+            GameLoadingCompletedEventHandler?.Invoke(this, @event);
         }
     }
 }

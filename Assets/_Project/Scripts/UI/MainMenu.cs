@@ -1,3 +1,4 @@
+using Deliverance.GameState.Event;
 using UnityEngine;
 
 namespace Deliverance.UI
@@ -9,14 +10,20 @@ namespace Deliverance.UI
             DeliveranceGameManager.Instance.EventRegister.UIButtonPressEventEventHandler += OnButtonPress;
         }
 
-        void StartGame()
+        void Start()
+        {
+            // Signal to game state manager that main menu scene has loaded
+            new MainMenuSceneLoadedEvent().Invoke();
+        }
+
+        private void StartGame()
         {
             DeliveranceGameManager.Instance.LevelManager.LoadGame();
         }
 
-        void OnButtonPress(object _, UIButtonPressEvent e)
+        private void OnButtonPress(object _, UIButtonPressEvent e)
         {
-            if (e.EventName == "StartGame")
+            if (e.EventName == UIButtonEvents.StartGame)
             {
                 StartGame();
             }

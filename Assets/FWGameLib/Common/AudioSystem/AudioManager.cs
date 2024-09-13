@@ -132,9 +132,8 @@ namespace FWGameLib.Common.AudioSystem
         {
             for (int i = 0; i < audioSourcePoolSize; i++)
             {
-                GameObject pooledAudioSource = Instantiate(pooledAudioSourcePrefab);
+                GameObject pooledAudioSource = Instantiate(pooledAudioSourcePrefab, transform, true);
                 pooledAudioSource.SetActive(false);
-                DontDestroyOnLoad(pooledAudioSource);
                 _pooledAudioSources.Add(pooledAudioSource);
             }
         }

@@ -46,7 +46,7 @@ namespace Deliverance.InteractableObjects.Weapon
 
         public bool CanTransitionShooting()
         {
-            bool shootPressed = input.weaponInteractions.Shoot.WasPressedThisFrame();
+            bool shootPressed = input.weaponInteractions.Shoot.IsPressed();
             bool hasBulletsInMagazine = weapon.bulletsLeft > 0;
 
             return shootPressed && hasBulletsInMagazine;

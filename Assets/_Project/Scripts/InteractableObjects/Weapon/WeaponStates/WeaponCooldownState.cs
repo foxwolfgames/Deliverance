@@ -41,7 +41,7 @@ namespace Deliverance.InteractableObjects.Weapon
         /// NOTE: This transition should be checked first!
         public bool CanTransitionIdleOutOfBullets()
         {
-            bool noBulletsInMagazine = weapon.bulletsLeft > 0;
+            bool noBulletsInMagazine = weapon.bulletsLeft <= 0;
             bool noBulletsInBurstRemaining = weapon.data.shootingMode == ShootingMode.Burst && weapon.burstBulletsLeft <= 0;
 
             return noBulletsInMagazine || noBulletsInBurstRemaining;

@@ -1,5 +1,6 @@
 ﻿using System;
 using FWGameLib.Common.EventSystem;
+using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
 
 namespace Deliverance.UI
@@ -11,6 +12,7 @@ namespace Deliverance.UI
         public void OnClick()
         {
             new UIButtonPressEvent(eventName).Invoke();
+            DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_UI_BUTTON_CLICK);
         }
     }
 

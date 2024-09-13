@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d9f64f29353e84cb0de744b53f2154, type: 3}
+  m_Name: MusicMainMenu
+  m_EditorClassIdentifier: 
+  soundName: 0
+  audioVolumeType: 0
+  clips: []
+  volume: 1
+  pitch: 1
+  dimensionality: 0.5
+  useLowPassFilter: 0
+  lowPassFilterCutoffFrequency: 1000
+  loop: 0
+  audioClipStrategy: 0
+  ignorePause: 0

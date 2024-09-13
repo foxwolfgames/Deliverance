@@ -20,6 +20,16 @@ namespace FWGameLib.InProject.AudioSystem
         /// <summary>
         /// Sound played when trying to shoot M16 with empty magazine
         /// </summary>
-        SFX_GAMEPLAY_M16_EMPTY_MAGAZINE
+        SFX_GAMEPLAY_M16_EMPTY_MAGAZINE,
+
+        /// <summary>
+        /// UI: Button click sound
+        /// </summary>
+        SFX_UI_BUTTON_CLICK,
+
+        /// <summary>
+        /// Main menu music
+        /// </summary>
+        MUSIC_MAIN_MENU
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Deliverance.Gameplay;
+﻿using Deliverance.Gameplay;
 using Deliverance.Gameplay.UI;
+using Deliverance.Input;
 using FWGameLib.Common.StateMachine;
 using UnityEngine;
 
@@ -31,6 +31,8 @@ namespace Deliverance.GameState
             Debug.Log("InGameState enter");
             isActive = true;
             new ChangeHUDVisibilityEvent(true).Invoke();
+            DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.WeaponInteractions, true);
+            DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.InGameMovement, true);
         }
 
         public void OnExit()
@@ -38,6 +40,8 @@ namespace Deliverance.GameState
             Debug.Log("InGameState exit");
             isActive = false;
             new ChangeHUDVisibilityEvent(false).Invoke();
+            DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.WeaponInteractions, false);
+            DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.InGameMovement, false);
             // Clean up state
             InGameManager = null;
         }

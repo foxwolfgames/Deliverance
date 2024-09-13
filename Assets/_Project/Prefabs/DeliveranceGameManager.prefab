@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 3540805893609301283}
   - component: {fileID: -4084132311018666404}
   - component: {fileID: 8909035596280111308}
+  - component: {fileID: 3828892720095117209}
   m_Layer: 0
   m_Name: DeliveranceGameManager
   m_TagString: Untagged
@@ -159,6 +160,7 @@ MonoBehaviour:
   Audio: {fileID: 2478975711870149584}
   LevelManager: {fileID: 8909035596280111308}
   GameState: {fileID: 9176027233817944477}
+  InputSystem: {fileID: 3828892720095117209}
 --- !u!114 &8909035596280111308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +175,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingCanvas: {fileID: 5731115958941754089}
   progressBar: {fileID: 1049312091603651324}
+--- !u!114 &3828892720095117209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5036267683267535143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c7a40750de451b8cb2a32f2bfca234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2307053819852082581
 PrefabInstance:
   m_ObjectHideFlags: 0

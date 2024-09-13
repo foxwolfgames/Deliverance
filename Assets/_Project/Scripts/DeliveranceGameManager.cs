@@ -1,3 +1,4 @@
+using Deliverance.Input;
 using FWGameLib.Common.AudioSystem;
 using FWGameLib.InProject.EventSystem;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Deliverance
         public EventRegister EventRegister;
         public LevelManager LevelManager;
         public GameStateManager GameState;
+        public InputManager InputSystem;
 
         void Awake()
         {

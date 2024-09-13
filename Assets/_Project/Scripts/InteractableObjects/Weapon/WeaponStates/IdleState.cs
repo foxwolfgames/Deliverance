@@ -1,5 +1,5 @@
-﻿using FWGameLib.Common.StateMachine;
-using UnityEngine;
+﻿using Deliverance.Input;
+using FWGameLib.Common.StateMachine;
 
 namespace Deliverance.InteractableObjects.Weapon
 {
@@ -9,15 +9,17 @@ namespace Deliverance.InteractableObjects.Weapon
     public class IdleState : IState
     {
         private global::Weapon weapon;
+        private readonly InputManager input;
 
         public IdleState(global::Weapon weapon)
         {
             this.weapon = weapon;
+            input = DeliveranceGameManager.Instance.InputSystem;
         }
 
         public void Tick()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && weapon.bulletsLeft <= 0)
+            if (input.weaponInteractions.Shoot.WasPressedThisFrame() && weapon.bulletsLeft <= 0)
             {
                 weapon.PlayEmptyMagazine();
             }
@@ -35,12 +37,19 @@ namespace Deliverance.InteractableObjects.Weapon
 
         public bool CanTransitionReloading()
         {
-            return UnityEngine.Input.GetKey(KeyCode.R) && weapon.bulletsLeft < weapon.data.magazineSize && InventoryManager.Instance.CheckAmmoLeft() > 0;
+            bool reloadPressed = input.weaponInteractions.Reload.IsPressed();
+            bool magazineHasRoomForBullets = weapon.bulletsLeft < weapon.data.magazineSize;
+            bool weaponHasReserveAmmo = InventoryManager.Instance.CheckAmmoLeft() > 0;
+
+            return reloadPressed && magazineHasRoomForBullets && weaponHasReserveAmmo;
         }
 
         public bool CanTransitionShooting()
         {
-            return UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && weapon.bulletsLeft > 0;
+            bool shootPressed = input.weaponInteractions.Shoot.WasPressedThisFrame();
+            bool hasBulletsInMagazine = weapon.bulletsLeft > 0;
+
+            return shootPressed && hasBulletsInMagazine;
         }
     }
 }

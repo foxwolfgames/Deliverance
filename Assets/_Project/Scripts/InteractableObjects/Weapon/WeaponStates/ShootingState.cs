@@ -7,11 +7,11 @@ namespace Deliverance.InteractableObjects.Weapon
     /// </summary>
     public class ShootingState : IState
     {
-        private global::Weapon _weapon;
+        private readonly global::Weapon weapon;
 
         public ShootingState(global::Weapon weapon)
         {
-            _weapon = weapon;
+            this.weapon = weapon;
         }
 
         public void Tick()
@@ -20,7 +20,7 @@ namespace Deliverance.InteractableObjects.Weapon
 
         public void OnEnter()
         {
-            _weapon.FireWeapon();
+            weapon.FireWeapon();
         }
 
         public void OnExit()

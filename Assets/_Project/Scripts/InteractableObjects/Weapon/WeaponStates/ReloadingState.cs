@@ -8,7 +8,7 @@ namespace Deliverance.InteractableObjects.Weapon
     /// </summary>
     public class ReloadingState : IState
     {
-        private global::Weapon weapon;
+        private readonly global::Weapon weapon;
         private float reloadTimer;
 
         public ReloadingState(global::Weapon weapon)

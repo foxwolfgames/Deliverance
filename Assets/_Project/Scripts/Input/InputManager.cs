@@ -5,8 +5,8 @@ namespace Deliverance.Input
     public class InputManager : MonoBehaviour
     {
         private GameInputActions inputActions;
-        private GameInputActions.InGameMovementActions inGameMovement;
-        private GameInputActions.WeaponInteractionActions weaponInteractions;
+        public GameInputActions.InGameMovementActions inGameMovement;
+        public GameInputActions.WeaponInteractionActions weaponInteractions;
 
         void Awake()
         {

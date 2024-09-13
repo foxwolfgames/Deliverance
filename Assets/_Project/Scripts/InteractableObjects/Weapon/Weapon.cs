@@ -18,6 +18,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float bulletVelocity;
     [SerializeField] private float bulletPrefabLifetime;
+    [SerializeField] public int damage=10;
 
     // Shooting
     [Header("Shooting")]
@@ -64,6 +65,8 @@ public class Weapon : MonoBehaviour
     {
         if (isActiveWeapon)
         {
+            animator.SetBool("isADS", isADS);
+            
             // // Our weapon is never pickupable so it won't have the outline script, but if we did want to have that would need this line
             // GetComponent<Outline>().enabled = false;
 
@@ -146,9 +149,11 @@ public class Weapon : MonoBehaviour
         // Instantiate the bullet
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
 
+        Bullet bul = bullet.GetComponent<Bullet>();
+        bul.bulletDamage = damage;
+
         // Point bullet to face the shooting direction
-        // Did you mean to set position to the shooting direction? - justin
-        // bullet.transform.position = shootingDirection;
+        bullet.transform.forward = shootingDirection;
 
         // Shoot the bullet forward with the specified velocity
         bullet.GetComponent<Rigidbody>().AddForce(shootingDirection * bulletVelocity, ForceMode.Impulse);
@@ -186,7 +191,6 @@ public class Weapon : MonoBehaviour
     private void ReloadCompleted()
     {
         isReloading = false;
-        isADS = false;
         if (InventoryManager.Instance.CheckAmmoLeft() + bulletsLeft > magazineSize)
         {
             // InventoryManager.Instance.UpdateAmmo(-(magazineSize - bulletsLeft/bulletsPerBurst));

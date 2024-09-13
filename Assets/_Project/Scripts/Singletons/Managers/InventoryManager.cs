@@ -63,7 +63,7 @@ public class InventoryManager : MonoBehaviour
         AddInteractableToInventory(item);
     }
 
-    private void AddInteractableToInventory(GameObject item)
+private void AddInteractableToInventory(GameObject item)
     {
         // TODO: check if there isn't already an item in the firstaid slot
         if (item.GetComponent<FirstAidKit>())
@@ -71,6 +71,9 @@ public class InventoryManager : MonoBehaviour
             item.transform.SetParent(inventorySlots[2].transform, false);
 
             // TODO: remove first aid kit from original position and add to inventory slot
+            FirstAidKit firstAidKit = item.GetComponent<FirstAidKit>();
+            firstAidKit.transform.position = inventorySlots[2].transform.position;
+            firstAidKit.transform.rotation = inventorySlots[2].transform.rotation;
             print("First aid kit added to inventory");
         }
 

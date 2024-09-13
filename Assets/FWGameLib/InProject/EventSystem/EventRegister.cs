@@ -1,5 +1,6 @@
 using System;
 using Deliverance.Gameplay;
+using Deliverance.Gameplay.UI;
 using Deliverance.GameState.Event;
 using Deliverance.UI;
 using FWGameLib.Common.AudioSystem.Event;
@@ -111,6 +112,24 @@ namespace FWGameLib.InProject.EventSystem
         public void Invoke(GameLoadingCompletedEvent @event)
         {
             GameLoadingCompletedEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// UI: Change the visibility of the in-game HUD
+        /// </summary>
+        public event EventHandler<ChangeHUDVisibilityEvent> ChangeHUDVisibilityEventHandler;
+        public void Invoke(ChangeHUDVisibilityEvent @event)
+        {
+            ChangeHUDVisibilityEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// UI: Update the ammo display
+        /// </summary>
+        public event EventHandler<UpdateAmmoDisplayEvent> UpdateAmmoDisplayEventHandler;
+        public void Invoke(UpdateAmmoDisplayEvent @event)
+        {
+            UpdateAmmoDisplayEventHandler?.Invoke(this, @event);
         }
     }
 }

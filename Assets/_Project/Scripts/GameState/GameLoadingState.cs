@@ -5,7 +5,10 @@ namespace Deliverance.GameState
 {
     public class GameLoadingState : MonoBehaviour, IState
     {
+#pragma warning disable CS0414 // Field is assigned but its value is never used
         [SerializeField] private bool isActive;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
+
         [SerializeField] private bool gameLoaded;
 
         void Start()

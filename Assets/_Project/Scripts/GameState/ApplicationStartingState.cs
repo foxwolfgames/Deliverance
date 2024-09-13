@@ -8,7 +8,10 @@ namespace Deliverance.GameState
     /// </summary>
     public class ApplicationStartingState : MonoBehaviour, IState
     {
+#pragma warning disable CS0414 // Field is assigned but its value is never used
         [SerializeField] private bool isActive;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
+
         [SerializeField] private bool hasMenuSceneLoaded;
 
         void Start()

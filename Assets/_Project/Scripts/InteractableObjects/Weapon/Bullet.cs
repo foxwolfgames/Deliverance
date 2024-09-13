@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    
+
     public int bulletDamage;
     private void OnCollisionEnter(Collision collision)
     {
@@ -20,19 +20,21 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
+        /*
         if (collision.gameObject.CompareTag("Enemy")) {
             print("hit enemy");
             collision.gameObject.GetComponent<BasicEnemy>().TakeDamage(bulletDamage);
             Destroy(gameObject);
         }
+        */
     }
 
-    private void CreateBulletImpactEffect(Collision collision) 
+    private void CreateBulletImpactEffect(Collision collision)
     {
         ContactPoint contactPoint = collision.contacts[0];
         GameObject impactEffect = Instantiate(
-            GlobalReferences.Instance.bulletImpactEffectPrefab, 
-            contactPoint.point, 
+            GlobalReferences.Instance.bulletImpactEffectPrefab,
+            contactPoint.point,
             Quaternion.LookRotation(contactPoint.normal)
             );
         impactEffect.transform.SetParent(collision.gameObject.transform);

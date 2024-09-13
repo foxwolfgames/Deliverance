@@ -51,7 +51,7 @@ namespace FWGameLib.Common.AudioSystem
             }
             else
             {
-                // throw new Exception("AudioManager is a singleton and cannot be instantiated more than once.");
+                Destroy(gameObject);
             }
         }
 

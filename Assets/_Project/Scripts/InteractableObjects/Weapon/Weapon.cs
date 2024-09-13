@@ -1,5 +1,6 @@
 using System.Collections;
 using Deliverance;
+using Deliverance.Gameplay.UI;
 using FWGameLib.InProject.AudioSystem;
 using TMPro;
 using UnityEngine;
@@ -66,15 +67,9 @@ public class Weapon : MonoBehaviour
         if (isActiveWeapon)
         {
             animator.SetBool("isADS", isADS);
-            
+
             // // Our weapon is never pickupable so it won't have the outline script, but if we did want to have that would need this line
             // GetComponent<Outline>().enabled = false;
-
-            // Sound
-            if (bulletsLeft == 0 && isShooting)
-            {
-                DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_M16_EMPTY_MAGAZINE, firePoint);
-            }
 
             if (currentShootingMode == ShootingMode.Auto)
             {
@@ -100,10 +95,21 @@ public class Weapon : MonoBehaviour
             // }
 
             // shooting weapon
-            if (isShooting && readyToShoot && bulletsLeft > 0)
+            if (isShooting && readyToShoot)
             {
-                burstBulletsLeft = bulletsPerBurst;
-                FireWeapon();
+                if (bulletsLeft > 0)
+                {
+                    burstBulletsLeft = bulletsPerBurst;
+                    FireWeapon();
+                }
+                else
+                {
+                    // Play empty magazine sound only on first click
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_M16_EMPTY_MAGAZINE, firePoint);
+                    }
+                }
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -116,10 +122,7 @@ public class Weapon : MonoBehaviour
             }
 
             // Update the ammo display
-            if (AmmoManager.Instance.ammoDisplay!= null)
-            {
-                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{InventoryManager.Instance.CheckAmmoLeft()}";
-            }
+            new UpdateAmmoDisplayEvent(bulletsLeft, InventoryManager.Instance.CheckAmmoLeft()).Invoke();
         }
     }
 
@@ -169,7 +172,7 @@ public class Weapon : MonoBehaviour
 
         if (currentShootingMode == ShootingMode.Burst && burstBulletsLeft > 1)
         {
-            burstBulletsLeft--;
+            burstBulletsLeft = Mathf.Min(burstBulletsLeft - 1, bulletsLeft - 1);
             Invoke("FireWeapon", shootingDelay);
         }
     }

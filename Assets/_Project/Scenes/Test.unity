@@ -1946,26 +1946,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActiveWeapon: 1
+  animator: {fileID: 0}
   muzzleEffect: {fileID: 1014809131}
   isADS: 0
+  data: {fileID: 11400000, guid: 109bc7f80f502e147a38df9a0b8f8de7, type: 2}
   bulletPrefab: {fileID: 348970396809085873, guid: 5268a4b77a345c6498d6255e4585d5f7,
     type: 3}
   firePoint: {fileID: 2145860471}
-  bulletVelocity: 500
-  bulletPrefabLifetime: 3
-  damage: 10
-  isShooting: 1
-  readyToShoot: 0
-  shootingDelay: 0.1
-  currentShootingMode: 2
-  bulletsPerBurst: 1
   burstBulletsLeft: 0
   hipSpreadIntensity: 0
   ADSSpreadIntensity: 0
-  reloadTime: 1.5
-  magazineSize: 20
   bulletsLeft: 0
-  isReloading: 0
 --- !u!95 &986549997
 Animator:
   serializedVersion: 5

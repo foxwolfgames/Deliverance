@@ -4,8 +4,19 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
     public int bulletDamage;
+    [SerializeField] private float lifetime;
+    [SerializeField] public float maxLifetime;
+
+    void Update()
+    {
+        lifetime += Time.deltaTime;
+        if (lifetime >= maxLifetime)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         CreateBulletImpactEffect(collision);

@@ -32,7 +32,7 @@ public class InventoryManager : MonoBehaviour
     {
         // making sure slot get set inactive when active slot changes
         foreach (GameObject slot in inventorySlots) {
-            if (slot == activeInventorySlot) 
+            if (slot == activeInventorySlot)
             {
                 slot.SetActive(true);
             }
@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void PickupObject(GameObject item) 
+    public void PickupObject(GameObject item)
     {
         // add to inventory
         AddInteractableToInventory(item);
@@ -109,12 +109,9 @@ private void AddInteractableToInventory(GameObject item)
     // Ammo
     public void UpdateAmmo(int amount)
     {
-        ammo += amount;
-        if (ammo < 0)
-        {
-            ammo = 0;
-        }
+        ammo = Mathf.Max(0, ammo + amount);
     }
+
     public int CheckAmmoLeft()
     {
         // We don't have other weapon models, so this is a placeholder in case we evolve our game with multiple weapon models

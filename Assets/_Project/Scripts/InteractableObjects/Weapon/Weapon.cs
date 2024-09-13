@@ -1,44 +1,26 @@
-using System.Collections;
 using Deliverance;
 using Deliverance.Gameplay.UI;
-using FWGameLib.InProject.AudioSystem;
-using TMPro;
+using Deliverance.InteractableObjects.Weapon;
+using FWGameLib.Common.StateMachine;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-
     [SerializeField] public bool isActiveWeapon;
-    private Animator animator;
-    [SerializeField] private GameObject muzzleEffect;
-    [SerializeField] private bool isADS;
+    public Animator animator;
+    [SerializeField] public GameObject muzzleEffect;
+    [SerializeField] public bool isADS;
+
+    [SerializeField] public WeaponDataSO data;
 
     // Bullet
     [Header("Bullet")]
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float bulletVelocity;
-    [SerializeField] private float bulletPrefabLifetime;
-    [SerializeField] public int damage=10;
-
-    // Shooting
-    [Header("Shooting")]
-    [SerializeField] private bool isShooting;
-    [SerializeField] private bool readyToShoot;
-    bool allowReset = true;
-    [SerializeField] public float shootingDelay;
-    [SerializeField] public enum ShootingMode
-    {
-        Single,
-        Burst,
-        Auto
-    }
-    [SerializeField] private ShootingMode currentShootingMode;
+    [SerializeField] public GameObject bulletPrefab;
+    [SerializeField] public Transform firePoint;
 
     //Burst (probably don't need for this project, but will add just in case)
     [Header("Burst")]
-    [SerializeField] public int bulletsPerBurst;
-    [SerializeField] private int burstBulletsLeft;
+    [SerializeField] public int burstBulletsLeft;
 
     // Spread
     [Header("Spread")]
@@ -48,18 +30,43 @@ public class Weapon : MonoBehaviour
 
     // Reload
     [Header("Reload")]
-    [SerializeField] public float reloadTime;
-    [SerializeField] private int magazineSize;
-    [SerializeField] private int bulletsLeft;
-    [SerializeField] private bool isReloading;
+    [SerializeField] public int bulletsLeft;
+
+    private StateMachine weaponStateMachine;
+    private IdleState idleState;
+    private WeaponCooldownState weaponCooldownState;
+    private ShootingState shootingState;
+    private ReloadingState reloadingState;
 
     private void Awake()
     {
-        readyToShoot = true;
-        burstBulletsLeft = bulletsPerBurst;
         animator = GetComponent<Animator>();
-        bulletsLeft = magazineSize;
+        bulletsLeft = data.magazineSize;
         spreadIntensity = hipSpreadIntensity;
+        InitializeWeaponStateMachine();
+    }
+
+    private void InitializeWeaponStateMachine()
+    {
+        weaponStateMachine = new StateMachine();
+
+        idleState = new IdleState(this);
+        weaponCooldownState = new WeaponCooldownState(this);
+        shootingState = new ShootingState(this);
+        reloadingState = new ReloadingState(this);
+
+        weaponStateMachine.AddTransition(idleState, shootingState, idleState.CanTransitionShooting);
+        weaponStateMachine.AddTransition(idleState, reloadingState, idleState.CanTransitionReloading);
+        weaponStateMachine.AddTransition(shootingState, weaponCooldownState, () => true);
+        weaponStateMachine.AddTransition(reloadingState, idleState, reloadingState.CanTransitionReloadCompleted);
+        weaponStateMachine.AddTransition(weaponCooldownState, idleState, weaponCooldownState.CanTransitionIdleOutOfBullets);
+        weaponStateMachine.AddTransition(weaponCooldownState, idleState, weaponCooldownState.CanTransitionIdleSingleShot);
+        weaponStateMachine.AddTransition(weaponCooldownState, shootingState, weaponCooldownState.CanTransitionShootingContinueBurst);
+        weaponStateMachine.AddTransition(weaponCooldownState, idleState, weaponCooldownState.CanTransitionIdleStoppedShootingAuto);
+        weaponStateMachine.AddTransition(weaponCooldownState, shootingState, weaponCooldownState.CanTransitionShootingContinueAuto);
+        weaponStateMachine.AddTransition(weaponCooldownState, reloadingState, weaponCooldownState.CanTransitionReloading);
+
+        weaponStateMachine.SetState(idleState);
     }
 
     void Update()
@@ -67,56 +74,18 @@ public class Weapon : MonoBehaviour
         if (isActiveWeapon)
         {
             animator.SetBool("isADS", isADS);
+            weaponStateMachine.Tick();
 
+            /*
             // // Our weapon is never pickupable so it won't have the outline script, but if we did want to have that would need this line
             // GetComponent<Outline>().enabled = false;
-
-            if (currentShootingMode == ShootingMode.Auto)
-            {
-                // Holding Down Left Mouse Button
-                isShooting = Input.GetKey(KeyCode.Mouse0);
-            }
-            else if (currentShootingMode == ShootingMode.Single || currentShootingMode == ShootingMode.Burst)
-            {
-                // Clicking Left Mouse Button Once for single/burst shot
-                isShooting = Input.GetKeyDown(KeyCode.Mouse0);
-            }
-
-            // Clicking Right Mouse Button to Reload
-            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading && InventoryManager.Instance.CheckAmmoLeft() > 0)
-            {
-                Reload();
-            }
-
-            // // Automatic reload when magazine is empty
-            // if (readyToShoot && !isShooting && isReloading == false && bulletsLeft <= 0)
-            // {
-            //     Reload();
-            // }
-
-            // shooting weapon
-            if (isShooting && readyToShoot)
-            {
-                if (bulletsLeft > 0)
-                {
-                    burstBulletsLeft = bulletsPerBurst;
-                    FireWeapon();
-                }
-                else
-                {
-                    // Play empty magazine sound only on first click
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
-                    {
-                        DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_M16_EMPTY_MAGAZINE, firePoint);
-                    }
-                }
-            }
+            */
 
             if (Input.GetMouseButtonDown(1))
             {
                 EnterADS();
             }
-            else if (Input.GetMouseButtonUp(1))
+            else
             {
                 ExitADS();
             }
@@ -126,86 +95,62 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void FireWeapon()
+    public void FireWeapon()
     {
-        // decrease bullets left each time shot is fired
+        // Update ammo
         bulletsLeft--;
+        if (data.shootingMode == ShootingMode.Burst)
+        {
+            burstBulletsLeft--;
+        }
 
+        // Visuals
         muzzleEffect.GetComponent<ParticleSystem>().Play();
-
+        DeliveranceGameManager.Instance.Audio.PlaySound(data.shootingSound, firePoint);
         if (isADS)
         {
             animator.SetTrigger("RECOIL_ADS");
         }
-        else if (!isADS)
+        else
         {
             animator.SetTrigger("RECOIL");
-
         }
-
-        DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_M16_SHOOT, firePoint);
-
-        readyToShoot = false;
 
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
 
         // Instantiate the bullet
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-
-        Bullet bul = bullet.GetComponent<Bullet>();
-        bul.bulletDamage = damage;
-
-        // Point bullet to face the shooting direction
-        bullet.transform.forward = shootingDirection;
-
-        // Shoot the bullet forward with the specified velocity
-        bullet.GetComponent<Rigidbody>().AddForce(shootingDirection * bulletVelocity, ForceMode.Impulse);
-
-        //Destroy the bullet after a specified lifetime
-        StartCoroutine(DestroyBulletAfterTime(bullet, bulletPrefabLifetime));
-
-        if (allowReset)
-        {
-            Invoke("ResetShot", shootingDelay);
-            allowReset = false;
-        }
-
-        if (currentShootingMode == ShootingMode.Burst && burstBulletsLeft > 1)
-        {
-            burstBulletsLeft = Mathf.Min(burstBulletsLeft - 1, bulletsLeft - 1);
-            Invoke("FireWeapon", shootingDelay);
-        }
+        GameObject bulletObject = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(shootingDirection));
+        Bullet bullet = bulletObject.GetComponent<Bullet>();
+        bullet.bulletDamage = data.damage;
+        bullet.maxLifetime = data.bulletMaxLifetime;
+        bulletObject.GetComponent<Rigidbody>().AddForce(shootingDirection * data.bulletVelocity, ForceMode.Impulse);
     }
 
-    private void ResetShot()
+    public void ReloadStart()
     {
-        readyToShoot = true;
-        allowReset = true;
-    }
-
-    private void Reload()
-    {
-        DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_COLT1911_RELOAD, firePoint);
+        DeliveranceGameManager.Instance.Audio.PlaySound(data.reloadingSound, firePoint);
         animator.SetTrigger("RELOAD");
-        isReloading = true;
-        Invoke("ReloadCompleted", reloadTime);
     }
 
-    private void ReloadCompleted()
+    public void UpdateAmmoAfterReload()
     {
-        isReloading = false;
-        if (InventoryManager.Instance.CheckAmmoLeft() + bulletsLeft > magazineSize)
+        int reserveAmmo = InventoryManager.Instance.CheckAmmoLeft();
+        if (reserveAmmo + bulletsLeft > data.magazineSize)
         {
-            // InventoryManager.Instance.UpdateAmmo(-(magazineSize - bulletsLeft/bulletsPerBurst));
-            InventoryManager.Instance.UpdateAmmo(-(magazineSize-bulletsLeft));
-            bulletsLeft = magazineSize;
+            int difference = data.magazineSize - bulletsLeft;
+            InventoryManager.Instance.UpdateAmmo(-difference);
+            bulletsLeft = data.magazineSize;
         }
         else
         {
-            int leftoverAmmo = InventoryManager.Instance.CheckAmmoLeft();
             InventoryManager.Instance.UpdateAmmo(-bulletsLeft);
-            bulletsLeft += leftoverAmmo;
+            bulletsLeft += reserveAmmo;
         }
+    }
+
+    public void PlayEmptyMagazine()
+    {
+        DeliveranceGameManager.Instance.Audio.PlaySound(data.emptyMagazineSound, firePoint);
     }
 
     private void EnterADS()
@@ -243,17 +188,9 @@ public class Weapon : MonoBehaviour
         Vector3 direction = targetPoint - firePoint.position;
 
         // Adding random spread
-        float x = UnityEngine.Random.Range(-spreadIntensity, spreadIntensity);
-        float y = UnityEngine.Random.Range(-spreadIntensity, spreadIntensity);
+        float x = Random.Range(-spreadIntensity, spreadIntensity);
+        float y = Random.Range(-spreadIntensity, spreadIntensity);
 
         return direction + new Vector3(x, y, 0); // Add some spread to the shooting
     }
-
-    private IEnumerator DestroyBulletAfterTime(GameObject bullet, float lifetime)
-    {
-        yield return new WaitForSeconds(lifetime);
-        Destroy(bullet); // Destroy the bullet when it reaches its lifetime
-    }
-
 }
-

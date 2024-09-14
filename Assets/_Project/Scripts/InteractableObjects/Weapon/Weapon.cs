@@ -2,6 +2,7 @@ using Deliverance;
 using Deliverance.Gameplay.UI;
 using Deliverance.InteractableObjects.Weapon;
 using FWGameLib.Common.StateMachine;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -73,7 +74,6 @@ public class Weapon : MonoBehaviour
     {
         if (isActiveWeapon)
         {
-            animator.SetBool("isADS", isADS);
             weaponStateMachine.Tick();
 
             /*
@@ -81,11 +81,11 @@ public class Weapon : MonoBehaviour
             // GetComponent<Outline>().enabled = false;
             */
 
-            if (Input.GetMouseButtonDown(1))
+            if (DeliveranceGameManager.Instance.InputSystem.weaponInteractions.ADS.WasPressedThisFrame())
             {
                 EnterADS();
             }
-            else
+            if (DeliveranceGameManager.Instance.InputSystem.weaponInteractions.ADS.WasReleasedThisFrame())
             {
                 ExitADS();
             }
@@ -156,6 +156,7 @@ public class Weapon : MonoBehaviour
     private void EnterADS()
     {
         animator.SetTrigger("enterADS");
+        animator.ResetTrigger("exitADS");
         isADS = true;
         spreadIntensity = ADSSpreadIntensity;
     }
@@ -163,6 +164,7 @@ public class Weapon : MonoBehaviour
     private void ExitADS()
     {
         animator.SetTrigger("exitADS");
+        animator.ResetTrigger("enterADS");
         isADS = false;
         spreadIntensity = hipSpreadIntensity;
     }

@@ -401,6 +401,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2177056850769726147, guid: e7d687c8a117d0a4fa2d903879767638,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 33afa92e2db71234bacb224e67c93094,
+        type: 2}
+    - target: {fileID: 2177056850769726147, guid: e7d687c8a117d0a4fa2d903879767638,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3148336070873907136, guid: 33afa92e2db71234bacb224e67c93094,
+        type: 2}
+    - target: {fileID: 2177056850769726147, guid: e7d687c8a117d0a4fa2d903879767638,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6059488895653773258, guid: e7d687c8a117d0a4fa2d903879767638,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1513,8 +1530,8 @@ MonoBehaviour:
     type: 3}
   firePoint: {fileID: 2145860471}
   burstBulletsLeft: 0
-  hipSpreadIntensity: 0
-  ADSSpreadIntensity: 0
+  hipSpreadIntensity: 0.3
+  ADSSpreadIntensity: 0.1
   bulletsLeft: 0
 --- !u!95 &986549997
 Animator:

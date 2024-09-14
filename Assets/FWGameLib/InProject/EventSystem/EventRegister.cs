@@ -1,5 +1,6 @@
 using System;
 using Deliverance.Gameplay;
+using Deliverance.Gameplay.Objective;
 using Deliverance.Gameplay.UI;
 using Deliverance.GameState.Event;
 using Deliverance.UI;
@@ -130,6 +131,35 @@ namespace FWGameLib.InProject.EventSystem
         public void Invoke(UpdateAmmoDisplayEvent @event)
         {
             UpdateAmmoDisplayEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// Objectives: Activate a EnterTriggerCriteria.
+        /// You should only call this once an objective is ready to listen for the trigger, or the player
+        /// can end up in a state where they can't progress.
+        /// </summary>
+        public event EventHandler<ActivateEnterTriggerCriteriaEvent> ActivateEnterTriggerCriteriaEventHandler;
+        public void Invoke(ActivateEnterTriggerCriteriaEvent @event)
+        {
+            ActivateEnterTriggerCriteriaEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// Objectives: Fired when an active EnterTriggerCriteria is completed.
+        /// </summary>
+        public event EventHandler<EnterTriggerCriteriaCompletedEvent> EnterTriggerCriteriaCompletedEventHandler;
+        public void Invoke(EnterTriggerCriteriaCompletedEvent @event)
+        {
+            EnterTriggerCriteriaCompletedEventHandler?.Invoke(this, @event);
+        }
+
+        /// <summary>
+        /// Objectives: Fired when a goal's criteria is completed.
+        /// </summary>
+        public event EventHandler<GoalCompletedEvent> GoalCompletedEventEventHandler;
+        public void Invoke(GoalCompletedEvent @event)
+        {
+            GoalCompletedEventEventHandler?.Invoke(this, @event);
         }
     }
 }

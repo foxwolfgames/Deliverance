@@ -15,7 +15,7 @@ namespace Deliverance.GameState
         [SerializeField] private bool isPaused;
 
         // Assigned via event
-        private InGameManager InGameManager;
+        public InGameManager InGameManager;
 
         void Start()
         {

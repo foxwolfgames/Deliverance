@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   isPaused: 0
+  InGameManager: {fileID: 0}
 --- !u!1 &5036267683267535143
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,9 +51,9 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
-    public void attack()
+    public void Attack()
     {
-
+        print("Attacking");
     }
 
     public void TakeDamage(int damageAmount)
@@ -65,6 +65,8 @@ public class BasicEnemy : MonoBehaviour
         else 
         {
             // enemyRoot.animator.SetTrigger("DAMAGE");
+            print("Took damage: " + damageAmount);
+            print("HP: " + HP);
         }
     }
     

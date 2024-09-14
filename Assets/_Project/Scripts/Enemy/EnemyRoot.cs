@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemyRoot : MonoBehaviour
 {
     [HideInInspector] public NavMeshAgent navMeshAgent;
-    // [HideInInspector] public Animator animator;
+    public Animator animator;
 
     [Header("Stats")]
     public float pathUpdateDelay = 0.2f;
@@ -15,6 +15,6 @@ public class EnemyRoot : MonoBehaviour
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        // animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 }

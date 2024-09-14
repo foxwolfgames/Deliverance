@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   isPaused: 0
+  InGameManager: {fileID: 0}
 --- !u!1 &5036267683267535143
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingCanvas: {fileID: 5731115958941754089}
   progressBar: {fileID: 1049312091603651324}
-  gameScenes: 03000000
+  gameScenes: 02000000
 --- !u!114 &3828892720095117209
 MonoBehaviour:
   m_ObjectHideFlags: 0

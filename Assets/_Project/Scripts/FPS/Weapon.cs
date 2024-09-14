@@ -2,7 +2,6 @@ using Deliverance;
 using Deliverance.Gameplay.UI;
 using Deliverance.InteractableObjects.Weapon;
 using FWGameLib.Common.StateMachine;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour

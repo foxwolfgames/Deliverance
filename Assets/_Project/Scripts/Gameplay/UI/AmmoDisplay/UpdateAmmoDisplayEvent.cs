@@ -4,10 +4,10 @@ namespace Deliverance.Gameplay.UI
 {
     public class UpdateAmmoDisplayEvent : IEvent
     {
-        public int AmmoCount;
-        public int ReserveAmmoCount;
+        public readonly int? AmmoCount;
+        public readonly int? ReserveAmmoCount;
 
-        public UpdateAmmoDisplayEvent(int ammoCount, int reserveAmmoCount)
+        public UpdateAmmoDisplayEvent(int? ammoCount, int? reserveAmmoCount)
         {
             AmmoCount = ammoCount;
             ReserveAmmoCount = reserveAmmoCount;

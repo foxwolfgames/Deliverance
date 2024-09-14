@@ -156,6 +156,118 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "InGameInteractable",
+            "id": "e218cecc-b456-4722-b689-534404717172",
+            "actions": [
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "ce602246-576f-4b29-bf08-5f9ac619d516",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4e3d6caf-16c7-4688-95b2-bce1095d195e",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "InGameMisc",
+            "id": "b29b96bd-d6c4-4dc6-ae01-00c6fabd6d58",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "e575f94b-2db5-498a-8e70-0c4cdc94b90d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fc52c417-487e-4184-b746-0d52517eec76",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "InPauseMenu",
+            "id": "2456fdc0-14ab-433f-a864-5695ed63b1b5",
+            "actions": [
+                {
+                    "name": "UnpauseBack",
+                    "type": "Button",
+                    "id": "3c58e0a1-bda0-4758-900f-5f22b666e7d6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "48ca4654-faa5-4b4b-a3ed-ef57e0896da2",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UnpauseBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MainMenu",
+            "id": "13ba4b34-ba8e-402f-9d9b-9b6407fe9da4",
+            "actions": [
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "2128009f-365b-4378-aa9e-75c69c18b4a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2a924ee5-eeb1-4937-8fc7-89ddc5fbc673",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

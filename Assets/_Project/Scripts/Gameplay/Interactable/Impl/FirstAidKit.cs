@@ -1,13 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
 
-public class FirstAidKit : MonoBehaviour
+namespace Deliverance.Gameplay.Interactable
 {
-    public void PickupFirstAidKit() {
-        // Add code to heal player
-        print("First aid kit picked up, healing player for 25 health");
-        // Destroy the kit
-        Destroy(gameObject);
+    public class FirstAidKit : MonoBehaviour
+    {
+        public void PickupFirstAidKit() {
+            // Add code to heal player
+            print("First aid kit picked up, healing player for 25 health");
+
+            DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_UI_BUTTON_CLICK, transform);
+
+            // Destroy the kit
+            Destroy(gameObject);
+        }
     }
 }

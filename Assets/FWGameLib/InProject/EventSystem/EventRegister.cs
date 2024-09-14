@@ -161,5 +161,14 @@ namespace FWGameLib.InProject.EventSystem
         {
             GoalCompletedEventEventHandler?.Invoke(this, @event);
         }
+
+        /// <summary>
+        /// UI: Update the interactable tooltip
+        /// </summary>
+        public event EventHandler<UpdateInteractableTooltipDisplayEvent> UpdateInteractableTooltipDisplayEventHandler;
+        public void Invoke(UpdateInteractableTooltipDisplayEvent @event)
+        {
+            UpdateInteractableTooltipDisplayEventHandler?.Invoke(this, @event);
+        }
     }
 }

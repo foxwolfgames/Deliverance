@@ -9,11 +9,13 @@ namespace Deliverance.Gameplay.UI
     {
         public Canvas uiCanvas;
         public AmmoDisplay ammoDisplay;
+        public InteractableTooltipDisplay interactableTooltip;
 
         void Awake()
         {
             DeliveranceGameManager.Instance.EventRegister.ChangeHUDVisibilityEventHandler += OnChangeHUDVisibilityEvent;
             DeliveranceGameManager.Instance.EventRegister.UpdateAmmoDisplayEventHandler += OnAmmoDisplayEvent;
+            DeliveranceGameManager.Instance.EventRegister.UpdateInteractableTooltipDisplayEventHandler += OnUpdateInteractableTooltipDisplayEvent;
             // Do not show the HUD on load
             uiCanvas.gameObject.SetActive(false);
         }
@@ -22,6 +24,7 @@ namespace Deliverance.Gameplay.UI
         {
             DeliveranceGameManager.Instance.EventRegister.ChangeHUDVisibilityEventHandler -= OnChangeHUDVisibilityEvent;
             DeliveranceGameManager.Instance.EventRegister.UpdateAmmoDisplayEventHandler -= OnAmmoDisplayEvent;
+            DeliveranceGameManager.Instance.EventRegister.UpdateInteractableTooltipDisplayEventHandler -= OnUpdateInteractableTooltipDisplayEvent;
         }
 
         private void OnChangeHUDVisibilityEvent(object _, ChangeHUDVisibilityEvent e)
@@ -32,6 +35,11 @@ namespace Deliverance.Gameplay.UI
         private void OnAmmoDisplayEvent(object _, UpdateAmmoDisplayEvent e)
         {
             ammoDisplay.UpdateAmmoDisplay(e.AmmoCount, e.ReserveAmmoCount);
+        }
+
+        private void OnUpdateInteractableTooltipDisplayEvent(object _, UpdateInteractableTooltipDisplayEvent e)
+        {
+            interactableTooltip.UpdateTooltip(e.Text);
         }
     }
 }

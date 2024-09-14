@@ -33,6 +33,7 @@ namespace Deliverance.GameState
             new ChangeHUDVisibilityEvent(true).Invoke();
             DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.WeaponInteractions, true);
             DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.InGameMovement, true);
+            DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.InGameInteractable, true);
         }
 
         public void OnExit()
@@ -42,6 +43,7 @@ namespace Deliverance.GameState
             new ChangeHUDVisibilityEvent(false).Invoke();
             DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.WeaponInteractions, false);
             DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.InGameMovement, false);
+            DeliveranceGameManager.Instance.InputSystem.ToggleInputMap(InputMaps.InGameInteractable, false);
             // Clean up state
             InGameManager = null;
         }

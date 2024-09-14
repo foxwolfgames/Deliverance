@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
 
-public class AmmoBox : MonoBehaviour
+namespace Deliverance.Gameplay.Interactable
 {
-    // Start is called before the first frame update
-    void Start()
+    public class AmmoBox : MonoBehaviour
     {
-        
-    }
+        public void Pickup()
+        {
+            // Add code to give player ammo
+            print("Ammo box picked up, giving player 20 ammo");
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_GAMEPLAY_COLT1911_RELOAD, transform);
+
+            // Destroy the box
+            Destroy(gameObject);
+        }
     }
 }

@@ -7,12 +7,14 @@ namespace Deliverance.Input
         private GameInputActions inputActions;
         public GameInputActions.InGameMovementActions inGameMovement;
         public GameInputActions.WeaponInteractionActions weaponInteractions;
+        public GameInputActions.InGameInteractableActions inGameInteractable;
 
         void Awake()
         {
             inputActions = new GameInputActions();
             inGameMovement = inputActions.InGameMovement;
             weaponInteractions = inputActions.WeaponInteraction;
+            inGameInteractable = inputActions.InGameInteractable;
         }
 
         public void ToggleInputMap(InputMaps inputMap, bool status)
@@ -27,6 +29,9 @@ namespace Deliverance.Input
                     case InputMaps.WeaponInteractions:
                         weaponInteractions.Enable();
                         break;
+                    case InputMaps.InGameInteractable:
+                        inGameInteractable.Enable();
+                        break;
                 }
             }
             else
@@ -38,6 +43,9 @@ namespace Deliverance.Input
                         break;
                     case InputMaps.WeaponInteractions:
                         weaponInteractions.Disable();
+                        break;
+                    case InputMaps.InGameInteractable:
+                        inGameInteractable.Disable();
                         break;
                 }
             }

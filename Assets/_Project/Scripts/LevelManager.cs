@@ -11,6 +11,7 @@ namespace Deliverance
     {
         [SerializeField] private GameObject loadingCanvas;
         [SerializeField] private Slider progressBar;
+        [SerializeField] public Scenes[] gameScenes;
 
         void Awake()
         {
@@ -25,7 +26,10 @@ namespace Deliverance
             progressBar.value = 0;
             loadingCanvas.SetActive(true);
             _loadOperations.Add(SceneManager.UnloadSceneAsync((int)Scenes.MainMenu));
-            _loadOperations.Add(SceneManager.LoadSceneAsync((int)Scenes.Game, LoadSceneMode.Additive));
+            foreach (Scenes scene in gameScenes)
+            {
+                _loadOperations.Add(SceneManager.LoadSceneAsync((int)scene, LoadSceneMode.Additive));
+            }
             StartCoroutine(GetSceneLoadProgress());
         }
 

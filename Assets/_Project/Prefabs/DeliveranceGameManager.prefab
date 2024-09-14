@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingCanvas: {fileID: 5731115958941754089}
   progressBar: {fileID: 1049312091603651324}
+  gameScenes: 02000000
 --- !u!114 &3828892720095117209
 MonoBehaviour:
   m_ObjectHideFlags: 0

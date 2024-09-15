@@ -29,13 +29,13 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
-        /*
-        if (collision.gameObject.CompareTag("Enemy")) {
+        BasicEnemy enemy = collision.gameObject.GetComponentInParent<BasicEnemy>();
+        if (enemy != null && enemy.gameObject.activeInHierarchy) {
             print("hit enemy");
-            collision.gameObject.GetComponent<BasicEnemy>().TakeDamage(bulletDamage);
+            enemy.TakeDamage(bulletDamage);
             Destroy(gameObject);
         }
-        */
+
     }
 
     private void CreateBulletImpactEffect(Collision collision)

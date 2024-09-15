@@ -3,6 +3,10 @@
     public enum InputMaps
     {
         InGameMovement,
-        WeaponInteractions
+        WeaponInteractions,
+        InGameInteractable,
+        InGameMisc,
+        InPauseMenu,
+        MainMenu
     }
 }

@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using Deliverance.Gameplay.Interactable;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -63,7 +63,7 @@ public class InventoryManager : MonoBehaviour
         AddInteractableToInventory(item);
     }
 
-private void AddInteractableToInventory(GameObject item)
+    private void AddInteractableToInventory(GameObject item)
     {
         // TODO: check if there isn't already an item in the firstaid slot
         if (item.GetComponent<FirstAidKit>())

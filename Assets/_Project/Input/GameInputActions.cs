@@ -178,6 +178,118 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InGameInteractable"",
+            ""id"": ""e218cecc-b456-4722-b689-534404717172"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce602246-576f-4b29-bf08-5f9ac619d516"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4e3d6caf-16c7-4688-95b2-bce1095d195e"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""InGameMisc"",
+            ""id"": ""b29b96bd-d6c4-4dc6-ae01-00c6fabd6d58"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""e575f94b-2db5-498a-8e70-0c4cdc94b90d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fc52c417-487e-4184-b746-0d52517eec76"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""InPauseMenu"",
+            ""id"": ""2456fdc0-14ab-433f-a864-5695ed63b1b5"",
+            ""actions"": [
+                {
+                    ""name"": ""UnpauseBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c58e0a1-bda0-4758-900f-5f22b666e7d6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""48ca4654-faa5-4b4b-a3ed-ef57e0896da2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UnpauseBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""MainMenu"",
+            ""id"": ""13ba4b34-ba8e-402f-9d9b-9b6407fe9da4"",
+            ""actions"": [
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""2128009f-365b-4378-aa9e-75c69c18b4a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2a924ee5-eeb1-4937-8fc7-89ddc5fbc673"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -193,6 +305,18 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_WeaponInteraction_Shoot = m_WeaponInteraction.FindAction("Shoot", throwIfNotFound: true);
         m_WeaponInteraction_Reload = m_WeaponInteraction.FindAction("Reload", throwIfNotFound: true);
         m_WeaponInteraction_ADS = m_WeaponInteraction.FindAction("ADS", throwIfNotFound: true);
+        // InGameInteractable
+        m_InGameInteractable = asset.FindActionMap("InGameInteractable", throwIfNotFound: true);
+        m_InGameInteractable_Interact = m_InGameInteractable.FindAction("Interact", throwIfNotFound: true);
+        // InGameMisc
+        m_InGameMisc = asset.FindActionMap("InGameMisc", throwIfNotFound: true);
+        m_InGameMisc_Pause = m_InGameMisc.FindAction("Pause", throwIfNotFound: true);
+        // InPauseMenu
+        m_InPauseMenu = asset.FindActionMap("InPauseMenu", throwIfNotFound: true);
+        m_InPauseMenu_UnpauseBack = m_InPauseMenu.FindAction("UnpauseBack", throwIfNotFound: true);
+        // MainMenu
+        m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
+        m_MainMenu_Back = m_MainMenu.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -382,6 +506,190 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         }
     }
     public WeaponInteractionActions @WeaponInteraction => new WeaponInteractionActions(this);
+
+    // InGameInteractable
+    private readonly InputActionMap m_InGameInteractable;
+    private List<IInGameInteractableActions> m_InGameInteractableActionsCallbackInterfaces = new List<IInGameInteractableActions>();
+    private readonly InputAction m_InGameInteractable_Interact;
+    public struct InGameInteractableActions
+    {
+        private @GameInputActions m_Wrapper;
+        public InGameInteractableActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_InGameInteractable_Interact;
+        public InputActionMap Get() { return m_Wrapper.m_InGameInteractable; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InGameInteractableActions set) { return set.Get(); }
+        public void AddCallbacks(IInGameInteractableActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InGameInteractableActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InGameInteractableActionsCallbackInterfaces.Add(instance);
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+        }
+
+        private void UnregisterCallbacks(IInGameInteractableActions instance)
+        {
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+        }
+
+        public void RemoveCallbacks(IInGameInteractableActions instance)
+        {
+            if (m_Wrapper.m_InGameInteractableActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInGameInteractableActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InGameInteractableActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InGameInteractableActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InGameInteractableActions @InGameInteractable => new InGameInteractableActions(this);
+
+    // InGameMisc
+    private readonly InputActionMap m_InGameMisc;
+    private List<IInGameMiscActions> m_InGameMiscActionsCallbackInterfaces = new List<IInGameMiscActions>();
+    private readonly InputAction m_InGameMisc_Pause;
+    public struct InGameMiscActions
+    {
+        private @GameInputActions m_Wrapper;
+        public InGameMiscActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_InGameMisc_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_InGameMisc; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InGameMiscActions set) { return set.Get(); }
+        public void AddCallbacks(IInGameMiscActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InGameMiscActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InGameMiscActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        private void UnregisterCallbacks(IInGameMiscActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        public void RemoveCallbacks(IInGameMiscActions instance)
+        {
+            if (m_Wrapper.m_InGameMiscActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInGameMiscActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InGameMiscActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InGameMiscActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InGameMiscActions @InGameMisc => new InGameMiscActions(this);
+
+    // InPauseMenu
+    private readonly InputActionMap m_InPauseMenu;
+    private List<IInPauseMenuActions> m_InPauseMenuActionsCallbackInterfaces = new List<IInPauseMenuActions>();
+    private readonly InputAction m_InPauseMenu_UnpauseBack;
+    public struct InPauseMenuActions
+    {
+        private @GameInputActions m_Wrapper;
+        public InPauseMenuActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UnpauseBack => m_Wrapper.m_InPauseMenu_UnpauseBack;
+        public InputActionMap Get() { return m_Wrapper.m_InPauseMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InPauseMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IInPauseMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InPauseMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InPauseMenuActionsCallbackInterfaces.Add(instance);
+            @UnpauseBack.started += instance.OnUnpauseBack;
+            @UnpauseBack.performed += instance.OnUnpauseBack;
+            @UnpauseBack.canceled += instance.OnUnpauseBack;
+        }
+
+        private void UnregisterCallbacks(IInPauseMenuActions instance)
+        {
+            @UnpauseBack.started -= instance.OnUnpauseBack;
+            @UnpauseBack.performed -= instance.OnUnpauseBack;
+            @UnpauseBack.canceled -= instance.OnUnpauseBack;
+        }
+
+        public void RemoveCallbacks(IInPauseMenuActions instance)
+        {
+            if (m_Wrapper.m_InPauseMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInPauseMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InPauseMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InPauseMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InPauseMenuActions @InPauseMenu => new InPauseMenuActions(this);
+
+    // MainMenu
+    private readonly InputActionMap m_MainMenu;
+    private List<IMainMenuActions> m_MainMenuActionsCallbackInterfaces = new List<IMainMenuActions>();
+    private readonly InputAction m_MainMenu_Back;
+    public struct MainMenuActions
+    {
+        private @GameInputActions m_Wrapper;
+        public MainMenuActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Back => m_Wrapper.m_MainMenu_Back;
+        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IMainMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MainMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainMenuActionsCallbackInterfaces.Add(instance);
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
+        }
+
+        private void UnregisterCallbacks(IMainMenuActions instance)
+        {
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
+        }
+
+        public void RemoveCallbacks(IMainMenuActions instance)
+        {
+            if (m_Wrapper.m_MainMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMainMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MainMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MainMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MainMenuActions @MainMenu => new MainMenuActions(this);
     public interface IInGameMovementActions
     {
         void OnForward(InputAction.CallbackContext context);
@@ -394,5 +702,21 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnADS(InputAction.CallbackContext context);
+    }
+    public interface IInGameInteractableActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
+    }
+    public interface IInGameMiscActions
+    {
+        void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IInPauseMenuActions
+    {
+        void OnUnpauseBack(InputAction.CallbackContext context);
+    }
+    public interface IMainMenuActions
+    {
+        void OnBack(InputAction.CallbackContext context);
     }
 }

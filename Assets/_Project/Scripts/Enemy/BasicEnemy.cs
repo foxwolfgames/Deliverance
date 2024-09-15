@@ -10,6 +10,12 @@ public class BasicEnemy : MonoBehaviour
     private float attackRange;
     private float pathUpdateDeadline;
 
+    [Header("Attack Settings")]
+    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private int damageAmount;
+    [SerializeField] private int damageInterval;
+    private float lastDamageTime;
+
     
     private void Awake()
     {
@@ -18,6 +24,7 @@ public class BasicEnemy : MonoBehaviour
     void Start()
     {
         attackRange = enemyRoot.navMeshAgent.stoppingDistance;
+        transform.Rotate(0, 90, 0);
     }
 
     void Update()
@@ -26,11 +33,12 @@ public class BasicEnemy : MonoBehaviour
             bool inRange = Vector3.Distance(target.position, transform.position) <= attackRange;
             if (inRange) {
                 LookAtTarget();
+                TryDamagePlayer();
             } else {
                 UpdatePath();
             }
 
-            // enemyRoot.animator.SetBool("attacking", inRange);
+            enemyRoot.animator.SetBool("isAttacking", inRange);
         }
         // enemyRoot.animator.SetFloat("speed", enemyRoot.navMeshAgent.desiredVelocity.sqrMagnitude);
     }
@@ -41,6 +49,15 @@ public class BasicEnemy : MonoBehaviour
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
+    }
+
+    private void TryDamagePlayer()
+    {
+        if (Time.time >= lastDamageTime + damageInterval)
+        {
+            playerHealth.TakeDamage(damageAmount);
+            lastDamageTime = Time.time;
+        }
     }
 
     private void UpdatePath()
@@ -60,11 +77,14 @@ public class BasicEnemy : MonoBehaviour
     {
         HP -= damageAmount;
         if (HP <= 0) {
-            // enemyRoot.animator.SetTrigger("DIE");
+            enemyRoot.animator.SetTrigger("DIE");
+            target = null;
+            GetComponent<Collider>().enabled = false;
+            Destroy(gameObject, 5f);
         }
         else 
         {
-            // enemyRoot.animator.SetTrigger("DAMAGE");
+            enemyRoot.animator.SetTrigger("DAMAGE");
             print("Took damage: " + damageAmount);
             print("HP: " + HP);
         }

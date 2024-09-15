@@ -15,8 +15,8 @@ MonoBehaviour:
   soundName: 4
   audioVolumeType: 1
   clips:
-  - {fileID: 8300000, guid: 35c5dd2f2b93d0a479a92096427eb7d7, type: 3}
-  volume: 0.75
+  - {fileID: 8300000, guid: 2989bfbf05f74bf89fb92826142462c4, type: 3}
+  volume: 1
   pitch: 1
   dimensionality: 0
   useLowPassFilter: 0

@@ -5,6 +5,9 @@ namespace Deliverance.UI
 {
     public class MainMenu : MonoBehaviour
     {
+        public RectTransform mainMenuPanel;
+        public RectTransform optionsPanel;
+
         void Awake()
         {
             DeliveranceGameManager.Instance.EventRegister.UIButtonPressEventEventHandler += OnButtonPress;
@@ -16,6 +19,22 @@ namespace Deliverance.UI
             new MainMenuSceneLoadedEvent().Invoke();
         }
 
+        void OpenOptions()
+        {
+            // Set top/bottom of rect transform to 0,0
+            optionsPanel.anchoredPosition = new Vector2(0, 0);
+            // Set top/bottom of main menu to 1080,-1080
+            mainMenuPanel.anchoredPosition = new Vector2(0, 1080);
+        }
+
+        void CloseOptions()
+        {
+            // Set top/bottom of rect transform to 1080,-1080
+            optionsPanel.anchoredPosition = new Vector2(0, 1080);
+            // Set top/bottom of main menu to 0,0
+            mainMenuPanel.anchoredPosition = new Vector2(0, 0);
+        }
+
         private void StartGame()
         {
             DeliveranceGameManager.Instance.LevelManager.LoadGame();
@@ -23,9 +42,20 @@ namespace Deliverance.UI
 
         private void OnButtonPress(object _, UIButtonPressEvent e)
         {
-            if (e.EventName == UIButtonEvents.StartGame)
+            switch (e.EventName)
             {
-                StartGame();
+                case UIButtonEvents.StartGame:
+                    StartGame();
+                    break;
+                case "MainMenuOptions":
+                    OpenOptions();
+                    break;
+                case "OptionsBack":
+                    CloseOptions();
+                    break;
+                case "QuitGame":
+                    Application.Quit();
+                    break;
             }
         }
     }

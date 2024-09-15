@@ -41,7 +41,7 @@ namespace FWGameLib.Common.AudioSystem
         {
             // Activate this object
             gameObject.SetActive(true);
-        
+
             // Set the parent if it exists
             if (parent)
             {
@@ -52,7 +52,7 @@ namespace FWGameLib.Common.AudioSystem
             {
                 trackedParent = null;
             }
-        
+
             _isPaused = false;
             currentSoundClip = clip;
             // Update the audio source
@@ -77,7 +77,15 @@ namespace FWGameLib.Common.AudioSystem
 
             if (@event.AudioVolumeType == currentSoundClip.Data.audioVolumeType)
             {
-                audioSource.AssignVolume(@event.VolumePercentage, currentSoundClip.Data.volume);
+                float masterVolume = AudioManager.Instance.VolumeValues[AudioVolumeType.Master];
+                float volume = AudioManager.Instance.VolumeValues[currentSoundClip.Data.audioVolumeType];
+                audioSource.AssignVolume(masterVolume * volume, currentSoundClip.Data.volume);
+            }
+            else if (@event.AudioVolumeType == AudioVolumeType.Master)
+            {
+                float masterVolume = @event.VolumePercentage;
+                float volume = AudioManager.Instance.VolumeValues[currentSoundClip.Data.audioVolumeType];
+                audioSource.AssignVolume(masterVolume * volume, currentSoundClip.Data.volume);
             }
         }
 
@@ -111,8 +119,9 @@ namespace FWGameLib.Common.AudioSystem
 
         private void AssignDefaultVolume()
         {
-            audioSource.AssignVolume(AudioManager.Instance.VolumeValues[currentSoundClip.Data.audioVolumeType],
-                currentSoundClip.Data.volume);
+            float masterVolume = AudioManager.Instance.VolumeValues[AudioVolumeType.Master];
+            float volume = AudioManager.Instance.VolumeValues[currentSoundClip.Data.audioVolumeType];
+            audioSource.AssignVolume(masterVolume * volume, currentSoundClip.Data.volume);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace FWGameLib.Common.AudioSystem
         public static AudioManager Instance { get; private set; }
 
         public int audioSourcePoolSize = 30;
-        public float defaultVolume = 0.5f;
         // Initialize all sounds in inspector
         public GameObject pooledAudioSourcePrefab;
         [Tooltip("Sounds scriptable objects")] public List<SoundClipSO> clipData;
@@ -31,11 +30,14 @@ namespace FWGameLib.Common.AudioSystem
             {
                 switch (audioType)
                 {
+                    case AudioVolumeType.Master:
+                        VolumeValues.Add(audioType, 1.0f);
+                        break;
                     case AudioVolumeType.VoiceLines:
                         VolumeValues.Add(audioType, 0.85f);
                         break;
                     default:
-                        VolumeValues.Add(audioType, defaultVolume);
+                        VolumeValues.Add(audioType, 0.5f);
                         break;
                 }
             }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FWGameLib.Common.Audio.Event;
 using FWGameLib.Common.AudioSystem;
 using FWGameLib.InProject.AudioSystem;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -41,34 +43,68 @@ namespace FWGameLib.Common.Audio
             InitializeAudioSourcePool();
         }
 
-        public void Play(Sounds sound)
+        /// <summary>
+        /// Play a sound at the origin
+        /// </summary>
+        /// <param name="sound">The identifier for the sound to be played</param>
+        /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
+        [CanBeNull]
+        public PooledAudioSource Play(Sounds sound)
         {
-            Play(sound, Vector3.zero);
+            return Play(sound, Vector3.zero);
         }
 
-        public void Play(Sounds sound, Vector3 position)
+        /// <summary>
+        /// Play a sound at a given position
+        /// </summary>
+        /// <param name="sound">The identifier for the sound to be played</param>
+        /// <param name="position">The world position to play the sound at</param>
+        /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
+        [CanBeNull]
+        public PooledAudioSource Play(Sounds sound, Vector3 position)
         {
             SoundClip clip = _sounds[sound];
             if (clip == null)
             {
                 Debug.LogWarning($"Sound {sound} not found in sound dictionary");
-                return;
+                return null;
             }
 
             GameObject pooledAudioSource = GetPooledAudioSource();
             if (pooledAudioSource == null)
             {
                 Debug.LogWarning("No available audio sources in pool");
-                return;
+                return null;
             }
 
             PooledAudioSource audioSource = pooledAudioSource.GetComponent<PooledAudioSource>();
-            audioSource.PlayClip(clip, position);
+            return audioSource.PlayClip(clip, mixer.outputAudioMixerGroup, position);
         }
 
-        public void Play(Sounds sound, Transform parent)
+        [CanBeNull]
+        public PooledAudioSource Play(Sounds sound, Transform parent)
         {
+            SoundClip clip = _sounds[sound];
+            if (clip == null)
+            {
+                Debug.LogWarning($"Sound {sound} not found in sound dictionary");
+                return null;
+            }
 
+            GameObject pooledAudioSource = GetPooledAudioSource();
+            if (pooledAudioSource == null)
+            {
+                Debug.LogWarning("No available audio sources in pool");
+                return null;
+            }
+
+            PooledAudioSource audioSource = pooledAudioSource.GetComponent<PooledAudioSource>();
+            return audioSource.PlayClip(clip, mixer.outputAudioMixerGroup, parent);
+        }
+
+        public void Stop(Sounds sound)
+        {
+            new StopSoundEvent(sound).Invoke();
         }
 
         private GameObject GetPooledAudioSource()

@@ -34,25 +34,32 @@ namespace FWGameLib.Common.Audio
             }
         }
 
-        public PooledAudioSource PlayClip(SoundClip clip, AudioMixerGroup output, Transform parent = null)
+        public PooledAudioSource PlayClip(SoundClip clip, AudioMixerGroup output, Vector3 position)
         {
             gameObject.SetActive(true);
-
-            if (parent)
-            {
-                parentTransform = parent;
-                transform.position = parent.position;
-            }
-            else
-            {
-                parentTransform = null;
-            }
+            gameObject.transform.localPosition = Vector3.zero; // Reset local position
+            gameObject.transform.position = position;
 
             isPausedByGame = false;
             currentSound = clip;
-            AssignDefaultVolume();
             audioSource.pitch = currentSound.Data.pitch;
-            audioSource.clip = currentSound.Data.clip;
+            audioSource.clip = currentSound.NextClip();
+            audioSource.Play();
+
+            return this;
+        }
+
+        public PooledAudioSource PlayClip(SoundClip clip, AudioMixerGroup output, Transform parent)
+        {
+            gameObject.SetActive(true);
+            parentTransform = parent;
+            transform.position = parent.position;
+
+            isPausedByGame = false;
+            currentSound = clip;
+            // AssignDefaultVolume();
+            audioSource.pitch = currentSound.Data.pitch;
+            audioSource.clip = currentSound.NextClip();
             audioSource.Play();
 
             return this;

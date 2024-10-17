@@ -6,6 +6,8 @@ namespace FWGameLib.Common.Audio.Event
 {
     public class ChangeVolumeEvent : IEvent
     {
+        public static event EventHandler<ChangeVolumeEvent> Handler;
+
         public AudioVolumeType AudioType { get; private set; }
         public float Volume { get; private set; }
 
@@ -17,7 +19,7 @@ namespace FWGameLib.Common.Audio.Event
 
         public void Invoke()
         {
-            throw new NotImplementedException();
+            Handler?.Invoke(this, this);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using FWGameLib.Common.EventSystem;
+﻿using FWGameLib.Common.EventSystem;
 
 namespace FWGameLib.Common.Audio.Event
 {
@@ -10,9 +9,12 @@ namespace FWGameLib.Common.Audio.Event
     /// </summary>
     public class PauseAudioEvent : IEvent
     {
+        public delegate void OnEvent(PauseAudioEvent e);
+        public static event OnEvent Handler;
+
         public void Invoke()
         {
-            throw new NotImplementedException();
+            Handler?.Invoke(this);
         }
     }
 }

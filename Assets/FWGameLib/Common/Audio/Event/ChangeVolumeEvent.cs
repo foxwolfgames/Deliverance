@@ -1,12 +1,12 @@
-﻿using System;
-using FWGameLib.Common.AudioSystem;
+﻿using FWGameLib.Common.AudioSystem;
 using FWGameLib.Common.EventSystem;
 
 namespace FWGameLib.Common.Audio.Event
 {
     public class ChangeVolumeEvent : IEvent
     {
-        public static event EventHandler<ChangeVolumeEvent> Handler;
+        public delegate void OnEvent(ChangeVolumeEvent e);
+        public static event OnEvent Handler;
 
         public AudioVolumeType AudioType { get; private set; }
         public float Volume { get; private set; }
@@ -19,7 +19,7 @@ namespace FWGameLib.Common.Audio.Event
 
         public void Invoke()
         {
-            Handler?.Invoke(this, this);
+            Handler?.Invoke(this);
         }
     }
 }

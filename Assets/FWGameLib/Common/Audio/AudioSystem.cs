@@ -81,6 +81,13 @@ namespace FWGameLib.Common.Audio
             return audioSource.PlayClip(clip, mixer.outputAudioMixerGroup, position);
         }
 
+        /// <summary>
+        /// Play a sound on a parent transform
+        /// If the parent is destroyed before the sound ends, the sound will continue to play on the parent's last position
+        /// </summary>
+        /// <param name="sound">The identifier for the sound to be played</param>
+        /// <param name="parent">The parent transform</param>
+        /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
         public PooledAudioSource Play(Sounds sound, Transform parent)
         {

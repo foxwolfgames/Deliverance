@@ -1,10 +1,12 @@
-﻿using System;
-using FWGameLib.Common.AudioSystem;
+﻿using FWGameLib.Common.AudioSystem;
 
 namespace FWGameLib.Common.Audio.Event
 {
     public class SoundEndEvent
     {
+        public delegate void OnEvent(SoundEndEvent e);
+        public static event OnEvent Handler;
+
         public SoundClip SoundClip { get; private set; }
         public PooledAudioSource AudioSource { get; private set; }
 
@@ -16,7 +18,7 @@ namespace FWGameLib.Common.Audio.Event
 
         public void Invoke()
         {
-            throw new NotImplementedException();
+            Handler?.Invoke(this);
         }
     }
 }

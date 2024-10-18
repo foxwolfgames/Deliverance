@@ -19,7 +19,7 @@ namespace Deliverance.GameState
 
         void Start()
         {
-            DeliveranceGameManager.Instance.EventRegister.InGameManagerInitializeEventHandler += OnInGameManagerInitializeEvent;
+            InGameManagerInitializeEvent.Handler += On;
         }
 
         public void Tick()
@@ -48,7 +48,7 @@ namespace Deliverance.GameState
             InGameManager = null;
         }
 
-        private void OnInGameManagerInitializeEvent(object _, InGameManagerInitializeEvent e)
+        private void On(InGameManagerInitializeEvent e)
         {
             InGameManager = e.InGameManager;
         }

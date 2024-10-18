@@ -2,8 +2,14 @@
 
 namespace Deliverance.Gameplay.UI
 {
+    /// <summary>
+    /// UI: Update the ammo display
+    /// </summary>
     public class UpdateAmmoDisplayEvent : IEvent
     {
+        public delegate void OnEvent(UpdateAmmoDisplayEvent e);
+        public static event OnEvent Handler;
+
         public readonly int? AmmoCount;
         public readonly int? ReserveAmmoCount;
 
@@ -15,7 +21,7 @@ namespace Deliverance.Gameplay.UI
 
         public void Invoke()
         {
-            DeliveranceGameManager.Instance.EventRegister.Invoke(this);
+            Handler?.Invoke(this);
         }
     }
 }

@@ -6,15 +6,15 @@
 
         void Awake()
         {
-            DeliveranceGameManager.Instance.EventRegister.EnterTriggerCriteriaCompletedEventHandler += OnEnterTriggerCriteriaCompletedEvent;
+            EnterTriggerCriteriaCompletedEvent.Handler += On;
         }
 
         void OnDestroy()
         {
-            DeliveranceGameManager.Instance.EventRegister.EnterTriggerCriteriaCompletedEventHandler -= OnEnterTriggerCriteriaCompletedEvent;
+            EnterTriggerCriteriaCompletedEvent.Handler -= On;
         }
 
-        private void OnEnterTriggerCriteriaCompletedEvent(object _, EnterTriggerCriteriaCompletedEvent e)
+        private void On(EnterTriggerCriteriaCompletedEvent e)
         {
             if (!isActive) return;
             if (isCompleted) return;

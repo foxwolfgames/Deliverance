@@ -46,8 +46,14 @@ namespace Deliverance.UI
         }
     }
 
+    /// <summary>
+    /// UI: Call when pressing a button
+    /// </summary>
     public class UIButtonPressEvent : IEvent
     {
+        public delegate void OnEvent(UIButtonPressEvent e);
+        public static event OnEvent Handler;
+
         public String EventName;
 
         public UIButtonPressEvent(string eventName)
@@ -57,7 +63,7 @@ namespace Deliverance.UI
 
         public void Invoke()
         {
-            DeliveranceGameManager.Instance.EventRegister.Invoke(this);
+            Handler?.Invoke(this);
         }
     }
 

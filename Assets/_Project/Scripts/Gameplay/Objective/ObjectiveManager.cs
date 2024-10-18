@@ -9,12 +9,12 @@ namespace Deliverance.Gameplay.Objective
 
         void Awake()
         {
-            DeliveranceGameManager.Instance.EventRegister.GoalCompletedEventEventHandler += OnGoalCompletedEvent;
+            GoalCompletedEvent.Handler += On;
         }
 
         private void OnDestroy()
         {
-            DeliveranceGameManager.Instance.EventRegister.GoalCompletedEventEventHandler -= OnGoalCompletedEvent;
+            GoalCompletedEvent.Handler -= On;
         }
 
         public void SetCurrentObjective([CanBeNull] Objective objective)
@@ -26,23 +26,6 @@ namespace Deliverance.Gameplay.Objective
 
             // Fire objective events
             currentObjective.StartObjective();
-        }
-
-        /// <summary>
-        /// Goal is completed, check if objective is finished.
-        /// </summary>
-        private void OnGoalCompletedEvent(object _, GoalCompletedEvent e)
-        {
-            if (!currentObjective) return;
-
-            if (currentObjective.AllGoalsCompleted())
-            {
-                CompleteCurrentObjective();
-            }
-            else
-            {
-                UpdateCurrentObjectiveUI();
-            }
         }
 
         private void UpdateCurrentObjectiveUI()
@@ -64,6 +47,23 @@ namespace Deliverance.Gameplay.Objective
             // TODO: Do UI/FX stuff pertaining to completing objective
 
             SetCurrentObjective(currentObjective.nextObjective);
+        }
+
+        /// <summary>
+        /// Goal is completed, check if objective is finished.
+        /// </summary>
+        private void On(GoalCompletedEvent e)
+        {
+            if (!currentObjective) return;
+
+            if (currentObjective.AllGoalsCompleted())
+            {
+                CompleteCurrentObjective();
+            }
+            else
+            {
+                UpdateCurrentObjectiveUI();
+            }
         }
     }
 }

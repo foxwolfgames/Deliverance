@@ -1,4 +1,5 @@
-﻿using FWGameLib.Common.StateMachine;
+﻿using Deliverance.GameState.Event;
+using FWGameLib.Common.StateMachine;
 using UnityEngine;
 
 namespace Deliverance.GameState
@@ -16,7 +17,7 @@ namespace Deliverance.GameState
 
         void Start()
         {
-            DeliveranceGameManager.Instance.EventRegister.MainMenuSceneLoadedEventHandler += (_, _) => { hasMenuSceneLoaded = true; };
+            MainMenuSceneLoadedEvent.Handler += _ => hasMenuSceneLoaded = true;
         }
 
         public void Tick()

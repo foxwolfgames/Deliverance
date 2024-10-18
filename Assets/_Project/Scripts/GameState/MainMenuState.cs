@@ -17,7 +17,7 @@ namespace Deliverance.GameState
 
         void Start()
         {
-            DeliveranceGameManager.Instance.EventRegister.UIButtonPressEventEventHandler += OnUIButtonPressEvent;
+            UIButtonPressEvent.Handler += On;
         }
 
         public void Tick()
@@ -44,7 +44,7 @@ namespace Deliverance.GameState
             return gameIsStarting;
         }
 
-        private void OnUIButtonPressEvent(object _, UIButtonPressEvent e)
+        private void On(UIButtonPressEvent e)
         {
             if (e.EventName == UIButtonEvents.StartGame)
             {

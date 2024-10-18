@@ -1,5 +1,6 @@
 using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace FWGameLib.Common.AudioSystem
 {
@@ -7,7 +8,7 @@ namespace FWGameLib.Common.AudioSystem
     public class SoundClipSO : ScriptableObject
     {
         [Header("Information")]
-        
+
         [Tooltip("The name of the sound. This is used to reference the sound in code.")]
         public Sounds soundName;
         [Tooltip("The type of audio this sound belongs to. This is used to control the volume of the sound.")]
@@ -16,7 +17,9 @@ namespace FWGameLib.Common.AudioSystem
         public AudioClip[] clips;
 
         [Header("Properties")]
-        
+
+        [Tooltip("Designated audio mixer group output")]
+        public AudioMixerGroup output;
         [Tooltip("The volume of the sound.")] [Range(0f, 1f)]
         public float volume = 1f;
         [Tooltip("The pitch of the sound.")] [Range(.1f, 3f)]
@@ -27,9 +30,9 @@ namespace FWGameLib.Common.AudioSystem
         public bool useLowPassFilter = false;
         [Tooltip("The cutoff frequency of the low pass filter.")]
         public float lowPassFilterCutoffFrequency = 1000f;
-        
+
         [Header("Control")]
-        
+
         [Tooltip("Whether the sound should loop when played.")]
         public bool loop = false;
         [Tooltip("The strategy for selecting the next AudioClip to play from the SoundClip.")]

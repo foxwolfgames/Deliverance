@@ -1,4 +1,5 @@
-﻿using FWGameLib.Common.StateMachine;
+﻿using Deliverance.GameState.Event;
+using FWGameLib.Common.StateMachine;
 using UnityEngine;
 
 namespace Deliverance.GameState
@@ -13,7 +14,7 @@ namespace Deliverance.GameState
 
         void Start()
         {
-            DeliveranceGameManager.Instance.EventRegister.GameLoadingCompletedEventHandler += (_, _) => { gameLoaded = true; };
+            GameLoadingCompletedEvent.Handler += _ => gameLoaded = true;
         }
 
         public void Tick()

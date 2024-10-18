@@ -1,6 +1,7 @@
 using Deliverance;
 using Deliverance.Gameplay.UI;
 using Deliverance.InteractableObjects.Weapon;
+using FWGameLib.Common.Audio;
 using FWGameLib.Common.StateMachine;
 using UnityEngine;
 
@@ -105,7 +106,7 @@ public class Weapon : MonoBehaviour
 
         // Visuals
         muzzleEffect.GetComponent<ParticleSystem>().Play();
-        DeliveranceGameManager.Instance.Audio.PlaySound(data.shootingSound, firePoint);
+        AudioSystem.Instance.Play(data.shootingSound, firePoint);
         if (isADS)
         {
             animator.SetTrigger("RECOIL_ADS");
@@ -127,7 +128,7 @@ public class Weapon : MonoBehaviour
 
     public void ReloadStart()
     {
-        DeliveranceGameManager.Instance.Audio.PlaySound(data.reloadingSound, firePoint);
+        AudioSystem.Instance.Play(data.reloadingSound, firePoint);
         animator.SetTrigger("RELOAD");
     }
 
@@ -149,7 +150,7 @@ public class Weapon : MonoBehaviour
 
     public void PlayEmptyMagazine()
     {
-        DeliveranceGameManager.Instance.Audio.PlaySound(data.emptyMagazineSound, firePoint);
+        AudioSystem.Instance.Play(data.emptyMagazineSound, firePoint);
     }
 
     private void EnterADS()

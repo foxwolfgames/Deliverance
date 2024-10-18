@@ -16,6 +16,7 @@ MonoBehaviour:
   audioVolumeType: 2
   clips:
   - {fileID: 8300000, guid: e22c0cd04df1fd642a44982eef89f13b, type: 3}
+  output: {fileID: 24300002, guid: 09df132bf6c0347978eac66b7ba557f7, type: 2}
   volume: 1
   pitch: 1
   dimensionality: 0

@@ -3,8 +3,14 @@ using JetBrains.Annotations;
 
 namespace Deliverance.Gameplay.UI
 {
+    /// <summary>
+    /// UI: Update the interactable tooltip
+    /// </summary>
     public class UpdateInteractableTooltipDisplayEvent : IEvent
     {
+        public delegate void OnEvent(UpdateInteractableTooltipDisplayEvent e);
+        public static event OnEvent Handler;
+
         [CanBeNull] public readonly string Text;
 
         public UpdateInteractableTooltipDisplayEvent([CanBeNull] string text)
@@ -14,7 +20,7 @@ namespace Deliverance.Gameplay.UI
 
         public void Invoke()
         {
-            DeliveranceGameManager.Instance.EventRegister.Invoke(this);
+            Handler?.Invoke(this);
         }
     }
 }

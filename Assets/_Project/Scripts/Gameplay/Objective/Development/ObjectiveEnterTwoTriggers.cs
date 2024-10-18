@@ -1,4 +1,5 @@
 ﻿using Deliverance.Gameplay.Objective;
+using FWGameLib.Common.Audio;
 using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Deliverance.Development
 
         public void CompleteObjective()
         {
-            DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_UI_BUTTON_CLICK);
+            AudioSystem.Instance.Play(Sounds.SFX_UI_BUTTON_CLICK);
         }
     }
 }

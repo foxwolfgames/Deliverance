@@ -13,31 +13,31 @@ namespace Deliverance.Gameplay.UI
 
         void Awake()
         {
-            DeliveranceGameManager.Instance.EventRegister.ChangeHUDVisibilityEventHandler += OnChangeHUDVisibilityEvent;
-            DeliveranceGameManager.Instance.EventRegister.UpdateAmmoDisplayEventHandler += OnAmmoDisplayEvent;
-            DeliveranceGameManager.Instance.EventRegister.UpdateInteractableTooltipDisplayEventHandler += OnUpdateInteractableTooltipDisplayEvent;
+            ChangeHUDVisibilityEvent.Handler += On;
+            UpdateAmmoDisplayEvent.Handler += On;
+            UpdateInteractableTooltipDisplayEvent.Handler += On;
             // Do not show the HUD on load
             uiCanvas.gameObject.SetActive(false);
         }
 
         void OnDestroy()
         {
-            DeliveranceGameManager.Instance.EventRegister.ChangeHUDVisibilityEventHandler -= OnChangeHUDVisibilityEvent;
-            DeliveranceGameManager.Instance.EventRegister.UpdateAmmoDisplayEventHandler -= OnAmmoDisplayEvent;
-            DeliveranceGameManager.Instance.EventRegister.UpdateInteractableTooltipDisplayEventHandler -= OnUpdateInteractableTooltipDisplayEvent;
+            ChangeHUDVisibilityEvent.Handler -= On;
+            UpdateAmmoDisplayEvent.Handler -= On;
+            UpdateInteractableTooltipDisplayEvent.Handler -= On;
         }
 
-        private void OnChangeHUDVisibilityEvent(object _, ChangeHUDVisibilityEvent e)
+        private void On(ChangeHUDVisibilityEvent e)
         {
             uiCanvas.gameObject.SetActive(e.IsVisible);
         }
 
-        private void OnAmmoDisplayEvent(object _, UpdateAmmoDisplayEvent e)
+        private void On(UpdateAmmoDisplayEvent e)
         {
             ammoDisplay.UpdateAmmoDisplay(e.AmmoCount, e.ReserveAmmoCount);
         }
 
-        private void OnUpdateInteractableTooltipDisplayEvent(object _, UpdateInteractableTooltipDisplayEvent e)
+        private void On(UpdateInteractableTooltipDisplayEvent e)
         {
             interactableTooltip.UpdateTooltip(e.Text);
         }

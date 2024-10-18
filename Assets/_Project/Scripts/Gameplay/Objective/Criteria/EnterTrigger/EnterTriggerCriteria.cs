@@ -14,12 +14,12 @@ namespace Deliverance.Gameplay.Objective
 
         void Awake()
         {
-            DeliveranceGameManager.Instance.EventRegister.ActivateEnterTriggerCriteriaEventHandler += OnActivateEnterTriggerCriteria;
+            ActivateEnterTriggerCriteriaEvent.Handler += On;
         }
 
         void OnDestroy()
         {
-            DeliveranceGameManager.Instance.EventRegister.ActivateEnterTriggerCriteriaEventHandler -= OnActivateEnterTriggerCriteria;
+            ActivateEnterTriggerCriteriaEvent.Handler -= On;
         }
 
         void OnTriggerEnter(Collider other)
@@ -34,7 +34,7 @@ namespace Deliverance.Gameplay.Objective
             onDeactivation.Invoke();
         }
 
-        private void OnActivateEnterTriggerCriteria(object _, ActivateEnterTriggerCriteriaEvent e)
+        private void On(ActivateEnterTriggerCriteriaEvent e)
         {
             if (e.TriggerId != triggerId) return;
             isActive = true;

@@ -10,7 +10,7 @@ namespace Deliverance.UI
 
         void Awake()
         {
-            DeliveranceGameManager.Instance.EventRegister.UIButtonPressEventEventHandler += OnButtonPress;
+            UIButtonPressEvent.Handler += On;
         }
 
         void Start()
@@ -40,7 +40,7 @@ namespace Deliverance.UI
             DeliveranceGameManager.Instance.LevelManager.LoadGame();
         }
 
-        private void OnButtonPress(object _, UIButtonPressEvent e)
+        private void On(UIButtonPressEvent e)
         {
             switch (e.EventName)
             {

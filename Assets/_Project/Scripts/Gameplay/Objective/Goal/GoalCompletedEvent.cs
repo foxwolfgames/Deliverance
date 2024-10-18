@@ -2,8 +2,14 @@
 
 namespace Deliverance.Gameplay.Objective
 {
+    /// <summary>
+    /// Objectives: Fired when a goal's criteria is completed.
+    /// </summary>
     public class GoalCompletedEvent : IEvent
     {
+        public delegate void OnEvent(GoalCompletedEvent e);
+        public static event OnEvent Handler;
+
         public AbstractGoal Goal;
 
         public GoalCompletedEvent(AbstractGoal goal)
@@ -13,7 +19,7 @@ namespace Deliverance.Gameplay.Objective
 
         public void Invoke()
         {
-            DeliveranceGameManager.Instance.EventRegister.Invoke(this);
+            Handler?.Invoke(this);
         }
     }
 }

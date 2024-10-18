@@ -1,5 +1,6 @@
 ﻿using Deliverance.UI;
-using FWGameLib.Common.AudioSystem.Event;
+using FWGameLib.Common.Audio;
+using FWGameLib.Common.Audio.Event;
 using FWGameLib.Common.StateMachine;
 using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Deliverance.GameState
 
         void Start()
         {
-            DeliveranceGameManager.Instance.EventRegister.UIButtonPressEventEventHandler += OnUIButtonPressEvent;
+            UIButtonPressEvent.Handler += On;
         }
 
         public void Tick()
@@ -28,14 +29,14 @@ namespace Deliverance.GameState
             Debug.Log("MainMenuState enter");
             gameIsStarting = false;
             isActive = true;
-            DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.MUSIC_MAIN_MENU);
+            AudioSystem.Instance.Play(Sounds.MUSIC_MAIN_MENU);
         }
 
         public void OnExit()
         {
             Debug.Log("MainMenuState exit");
             isActive = false;
-            new FWGLStopSoundEvent(Sounds.MUSIC_MAIN_MENU).Invoke();
+            new StopSoundEvent(Sounds.MUSIC_MAIN_MENU).Invoke();
         }
 
         public bool CanTransitionGameIsStarting()
@@ -43,7 +44,7 @@ namespace Deliverance.GameState
             return gameIsStarting;
         }
 
-        private void OnUIButtonPressEvent(object _, UIButtonPressEvent e)
+        private void On(UIButtonPressEvent e)
         {
             if (e.EventName == UIButtonEvents.StartGame)
             {

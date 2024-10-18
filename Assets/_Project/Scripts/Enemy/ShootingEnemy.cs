@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using FWGameLib.Common.StateMachine;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ShootingEnemy : MonoBehaviour
 {
@@ -94,9 +94,9 @@ public class ShootingEnemy : MonoBehaviour
     {
         Vector3 direction = transform.forward;
         direction += new Vector3(
-            UnityEngine.Random.Range(-spread.x, spread.x), 
-            UnityEngine.Random.Range(-spread.y, spread.y), 
-            UnityEngine.Random.Range(-spread.z, spread.z)
+            Random.Range(-spread.x, spread.x), 
+            Random.Range(-spread.y, spread.y), 
+            Random.Range(-spread.z, spread.z)
         );
         direction.Normalize();
         return direction;

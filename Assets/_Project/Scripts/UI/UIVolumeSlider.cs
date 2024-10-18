@@ -1,7 +1,6 @@
 ﻿using FWGameLib.Common.Audio;
 using FWGameLib.Common.Audio.Event;
 using FWGameLib.Common.AudioSystem;
-using FWGameLib.Common.AudioSystem.Event;
 using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,7 +15,7 @@ namespace Deliverance.UI
         void Start()
         {
             Slider slider = GetComponent<Slider>();
-            slider.minValue = 0.001f;
+            slider.minValue = 0.0001f;
             slider.maxValue = 1f;
             slider.onValueChanged.AddListener(OnValueChange);
         }
@@ -24,7 +23,8 @@ namespace Deliverance.UI
         void OnEnable()
         {
             Slider slider = GetComponent<Slider>();
-            slider.value = DeliveranceGameManager.Instance.Audio.VolumeValues[audioVolumeType];
+            // TODO: Save this somewhere?
+            slider.value = 1f;
         }
 
         public void OnInitializePotentialDrag(PointerEventData eventData)

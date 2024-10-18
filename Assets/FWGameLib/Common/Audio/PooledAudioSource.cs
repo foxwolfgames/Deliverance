@@ -1,4 +1,5 @@
-﻿using FWGameLib.Common.Audio.Event;
+﻿using System;
+using FWGameLib.Common.Audio.Event;
 using FWGameLib.Common.AudioSystem;
 using UnityEngine;
 
@@ -60,7 +61,7 @@ namespace FWGameLib.Common.Audio
             // Unexpected: We should not set up for play state if already playing
             if (gameObject.activeInHierarchy)
             {
-                throw new System.Exception("Unexpected state: PooledAudioSource is already playing a sound");
+                throw new Exception("Unexpected state: PooledAudioSource is already playing a sound");
             }
 
             gameObject.SetActive(true);

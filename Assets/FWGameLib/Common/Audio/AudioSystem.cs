@@ -60,7 +60,7 @@ namespace FWGameLib.Common.Audio
         /// <param name="sound">The identifier for the sound to be played</param>
         /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
-        public Audio.PooledAudioSource Play(Sounds sound)
+        public PooledAudioSource Play(Sounds sound)
         {
             return Play(sound, Vector3.zero);
         }
@@ -72,7 +72,7 @@ namespace FWGameLib.Common.Audio
         /// <param name="position">The world position to play the sound at</param>
         /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
-        public Audio.PooledAudioSource Play(Sounds sound, Vector3 position)
+        public PooledAudioSource Play(Sounds sound, Vector3 position)
         {
             SoundClip clip = _sounds[sound];
             if (clip == null)
@@ -88,7 +88,7 @@ namespace FWGameLib.Common.Audio
                 return null;
             }
 
-            Audio.PooledAudioSource audioSource = pooledAudioSource.GetComponent<Audio.PooledAudioSource>();
+            PooledAudioSource audioSource = pooledAudioSource.GetComponent<PooledAudioSource>();
             return audioSource.PlayClip(clip, position);
         }
 
@@ -100,7 +100,7 @@ namespace FWGameLib.Common.Audio
         /// <param name="parent">The parent transform</param>
         /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
-        public Audio.PooledAudioSource Play(Sounds sound, Transform parent)
+        public PooledAudioSource Play(Sounds sound, Transform parent)
         {
             SoundClip clip = _sounds[sound];
             if (clip == null)
@@ -116,7 +116,7 @@ namespace FWGameLib.Common.Audio
                 return null;
             }
 
-            Audio.PooledAudioSource audioSource = pooledAudioSource.GetComponent<Audio.PooledAudioSource>();
+            PooledAudioSource audioSource = pooledAudioSource.GetComponent<PooledAudioSource>();
             return audioSource.PlayClip(clip, parent);
         }
 

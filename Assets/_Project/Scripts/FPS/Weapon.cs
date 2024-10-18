@@ -3,7 +3,6 @@ using Deliverance.Gameplay.UI;
 using Deliverance.InteractableObjects.Weapon;
 using FWGameLib.Common.Audio;
 using FWGameLib.Common.StateMachine;
-using FWGameLib.InProject.AudioSystem;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour

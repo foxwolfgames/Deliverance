@@ -36,6 +36,7 @@ namespace FWGameLib.Common.Audio
 
         private readonly List<GameObject> _audioSourcePool = new();
         private readonly Dictionary<Sounds, SoundClip> _sounds = new();
+
         void Awake()
         {
             if (Instance == null)

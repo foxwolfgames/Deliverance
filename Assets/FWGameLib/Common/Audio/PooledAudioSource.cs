@@ -1,7 +1,6 @@
 ﻿using FWGameLib.Common.Audio.Event;
 using FWGameLib.Common.AudioSystem;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace FWGameLib.Common.Audio
 {
@@ -41,19 +40,19 @@ namespace FWGameLib.Common.Audio
             }
         }
 
-        public PooledAudioSource PlayClip(SoundClip clip, AudioMixerGroup output, Vector3 position)
+        public PooledAudioSource PlayClip(SoundClip clip, Vector3 position)
         {
             SetupForPlayState();
             transform.position = position;
-            return PlayClip(clip, output);
+            return PlayClip(clip);
         }
 
-        public PooledAudioSource PlayClip(SoundClip clip, AudioMixerGroup output, Transform parent)
+        public PooledAudioSource PlayClip(SoundClip clip, Transform parent)
         {
             SetupForPlayState();
             parentTransform = parent;
             transform.position = parent.position;
-            return PlayClip(clip, output);
+            return PlayClip(clip);
         }
 
         private void SetupForPlayState()
@@ -69,13 +68,15 @@ namespace FWGameLib.Common.Audio
             transform.localPosition = Vector3.zero; // Reset local position
         }
 
-        private PooledAudioSource PlayClip(SoundClip clip, AudioMixerGroup output)
+        private PooledAudioSource PlayClip(SoundClip clip)
         {
             currentSound = clip;
-            audioSource.outputAudioMixerGroup = output;
-            // AssignDefaultVolume();
+            audioSource.outputAudioMixerGroup = clip.Data.output;
             audioSource.pitch = clip.Data.pitch;
             audioSource.clip = clip.NextClip();
+            audioSource.loop = clip.Data.loop;
+            audioSource.ignoreListenerPause = clip.Data.ignorePause;
+            audioSource.spatialBlend = clip.Data.dimensionality;
 
             // TODO: We should rewrite the filter system to use builder pattern?
             lowPassFilter.enabled = clip.Data.useLowPassFilter;

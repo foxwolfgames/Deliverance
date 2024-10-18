@@ -1,4 +1,5 @@
 ﻿using System;
+using FWGameLib.Common.Audio;
 using FWGameLib.Common.EventSystem;
 using FWGameLib.InProject.AudioSystem;
 using TMPro;
@@ -18,7 +19,7 @@ namespace Deliverance.UI
         public void OnClick()
         {
             new UIButtonPressEvent(eventName).Invoke();
-            DeliveranceGameManager.Instance.Audio.PlaySound(Sounds.SFX_UI_BUTTON_CLICK);
+            AudioSystem.Instance.Play(Sounds.SFX_UI_BUTTON_CLICK);
         }
 
         public void MouseOn()

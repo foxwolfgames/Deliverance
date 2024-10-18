@@ -11,6 +11,14 @@ namespace FWGameLib.Common.Audio
 {
     public class AudioSystem : MonoBehaviour
     {
+        private const string VOL_MASTER_MASTER = "Master_Master";
+        private const string VOL_MASTER_MUSIC = "Master_Music";
+        private const string VOL_MASTER_SFX = "Master_SFX";
+        private const string VOL_MASTER_VOICELINES = "Master_VoiceLines";
+        private const string VOL_SFX_MASTER = "SFX_Master";
+        private const string VOL_MUSIC_MASTER = "Music_Master";
+        private const string VOL_VOICELINES_MASTER = "VoiceLines_Master";
+
         public static AudioSystem Instance { get; private set; }
 
         [Header("Audio Source Pooling")]
@@ -18,14 +26,16 @@ namespace FWGameLib.Common.Audio
         [SerializeField] public GameObject pooledAudioSourcePrefab;
 
         [Header("Mixing")]
-        [SerializeField] public AudioMixer mixer;
+        [SerializeField] public AudioMixer masterMixer;
+        [SerializeField] public AudioMixer musicMixer;
+        [SerializeField] public AudioMixer sfxMixer;
+        [SerializeField] public AudioMixer voiceLinesMixer;
 
         [Tooltip("Sound scriptable objects")]
         [SerializeField] public List<SoundClipSO> clips;
 
         private readonly List<GameObject> _audioSourcePool = new();
         private readonly Dictionary<Sounds, SoundClip> _sounds = new();
-
         void Awake()
         {
             if (Instance == null)
@@ -41,6 +51,7 @@ namespace FWGameLib.Common.Audio
 
             InitializeSoundsFromInspectorValues();
             InitializeAudioSourcePool();
+            ChangeVolumeEvent.Handler += On;
         }
 
         /// <summary>
@@ -49,7 +60,7 @@ namespace FWGameLib.Common.Audio
         /// <param name="sound">The identifier for the sound to be played</param>
         /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
-        public PooledAudioSource Play(Sounds sound)
+        public Audio.PooledAudioSource Play(Sounds sound)
         {
             return Play(sound, Vector3.zero);
         }
@@ -61,7 +72,7 @@ namespace FWGameLib.Common.Audio
         /// <param name="position">The world position to play the sound at</param>
         /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
-        public PooledAudioSource Play(Sounds sound, Vector3 position)
+        public Audio.PooledAudioSource Play(Sounds sound, Vector3 position)
         {
             SoundClip clip = _sounds[sound];
             if (clip == null)
@@ -77,8 +88,8 @@ namespace FWGameLib.Common.Audio
                 return null;
             }
 
-            PooledAudioSource audioSource = pooledAudioSource.GetComponent<PooledAudioSource>();
-            return audioSource.PlayClip(clip, mixer.outputAudioMixerGroup, position);
+            Audio.PooledAudioSource audioSource = pooledAudioSource.GetComponent<Audio.PooledAudioSource>();
+            return audioSource.PlayClip(clip, position);
         }
 
         /// <summary>
@@ -89,7 +100,7 @@ namespace FWGameLib.Common.Audio
         /// <param name="parent">The parent transform</param>
         /// <returns>A PooledAudioSource if the sound was played, null otherwise</returns>
         [CanBeNull]
-        public PooledAudioSource Play(Sounds sound, Transform parent)
+        public Audio.PooledAudioSource Play(Sounds sound, Transform parent)
         {
             SoundClip clip = _sounds[sound];
             if (clip == null)
@@ -105,8 +116,8 @@ namespace FWGameLib.Common.Audio
                 return null;
             }
 
-            PooledAudioSource audioSource = pooledAudioSource.GetComponent<PooledAudioSource>();
-            return audioSource.PlayClip(clip, mixer.outputAudioMixerGroup, parent);
+            Audio.PooledAudioSource audioSource = pooledAudioSource.GetComponent<Audio.PooledAudioSource>();
+            return audioSource.PlayClip(clip, parent);
         }
 
         public void Stop(Sounds sound)
@@ -136,6 +147,25 @@ namespace FWGameLib.Common.Audio
                                                            worldPositionStays: true);
                 pooledAudioSource.SetActive(false);
                 _audioSourcePool.Add(pooledAudioSource);
+            }
+        }
+
+        private void On(ChangeVolumeEvent e)
+        {
+            switch (e.AudioType)
+            {
+                case AudioVolumeType.Master:
+                    masterMixer.SetFloat(VOL_MASTER_MASTER, Mathf.Log10(e.Volume) * 20);
+                    break;
+                case AudioVolumeType.Music:
+                    musicMixer.SetFloat(VOL_MUSIC_MASTER, Mathf.Log10(e.Volume) * 20);
+                    break;
+                case AudioVolumeType.SFX:
+                    sfxMixer.SetFloat(VOL_SFX_MASTER, Mathf.Log10(e.Volume) * 20);
+                    break;
+                case AudioVolumeType.VoiceLines:
+                    voiceLinesMixer.SetFloat(VOL_VOICELINES_MASTER, Mathf.Log10(e.Volume) * 20);
+                    break;
             }
         }
     }
